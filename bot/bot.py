@@ -7,8 +7,6 @@ import asyncio
 
 from .utils.config import settings
 from .utils.log import get_logger
-from .db.database import engine, Session
-from .db.models import Base, User
 
 log = get_logger(__name__)
 
@@ -25,19 +23,10 @@ app = lightbulb.BotApp(
     banner=None
 )
 
-# Database models
-# Base.metadata.drop_all(engine, tables=[Base.metadata.tables["threads"],
-#                                        Base.metadata.tables["messages"]])
-Base.metadata.create_all(bind=engine)
-
-# Extensions
-# app.load_extensions_from("./bot/extensions", must_exist=True)
-
 
 @app.listen(hikari.StartingEvent)
 async def on_starting(event: hikari.StartingEvent) -> None:
     app.d.admin = await app.rest.fetch_user(ADMIN)
-    app.d.Session = Session
 
 
 async def check_threads():
@@ -83,29 +72,6 @@ async def on_error(event: lightbulb.CommandErrorEvent) -> None:
     else:
         raise exception
     await event.context.respond(error_msg, flags=hikari.MessageFlag.EPHEMERAL)
-
-
-@app.listen(hikari.DMMessageCreateEvent)
-async def on_respond(event: hikari.DMMessageCreateEvent) -> None:
-    """
-    Listens for DM messages and responds accordingly.
-
-    Notes:
-        - If the message author is a bot, the function returns early.
-        - Extracts the URL of the referenced message's embed and retrieves the thread channel.
-        - Creates a message in the thread channel with the content and attachments of the DM message.
-        - Adds a reaction to the referenced message to indicate successful processing.
-    """
-    if event.author.is_bot:
-        return
-
-    url = event.message.referenced_message.embeds[0].url
-    thread_id = url.split('/')[-1]
-    thread = await app.rest.fetch_channel(thread_id)
-
-    await app.rest.create_message(thread, content=event.content, attachments=event.message.attachments)
-
-    await event.message.referenced_message.add_reaction("✅")
 
 
 def run() -> None:
