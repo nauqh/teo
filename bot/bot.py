@@ -1,14 +1,10 @@
 import bot
 import hikari
 import lightbulb
-import pandas as pd
 from datetime import datetime, timedelta
 import asyncio
 
 from .utils.config import settings
-from .utils.log import get_logger
-
-log = get_logger(__name__)
 
 TOKEN = settings['TOKEN']
 GUILD = settings['GUILD']
