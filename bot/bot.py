@@ -12,6 +12,7 @@ TOKEN = os.getenv("TOKEN")
 GUILD = int(os.getenv("GUILD"))
 ADMIN = int(os.getenv("ADMIN"))
 FORUM_CHANNEL = int(os.getenv("FORUM_CHANNEL"))
+EXAM_CHANNEL = int(os.getenv("EXAM_CHANNEL"))
 
 app = lightbulb.BotApp(TOKEN,
                        intents=hikari.Intents.ALL,
@@ -64,12 +65,29 @@ async def check_threads():
                     embed=embed)
 
 
-@app.listen(hikari.StartedEvent)
+async def check_exam_requests():
+    CHECK_INTERVAL = 900
+    while True:
+        await asyncio.sleep(CHECK_INTERVAL)
+        messages = await app.rest.fetch_messages(EXAM_CHANNEL).take_while(
+            lambda message: message.created_at.date() == datetime.now().date()
+        )
+
+        for message in messages:
+            author = await app.rest.fetch_member(GUILD, message.author.id)
+            # # Filter messages from learner (not have TA role) and has no reactions
+            if 1194665960376901773 not in [role.id for role in author.get_roles()] and not message.reactions:
+                print(
+                    f"Request exam from {message.author} has not been resolved")
+
+
+@ app.listen(hikari.StartedEvent)
 async def on_started(event: hikari.StartedEvent) -> None:
     asyncio.create_task(check_threads())
+    asyncio.create_task(check_exam_requests())
 
 
-@app.listen(lightbulb.CommandErrorEvent)
+@ app.listen(lightbulb.CommandErrorEvent)
 async def on_error(event: lightbulb.CommandErrorEvent) -> None:
     exception = event.exception
     if isinstance(exception, lightbulb.CheckFailure):
