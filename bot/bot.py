@@ -2,9 +2,9 @@ import bot
 import hikari
 import lightbulb
 from datetime import datetime, timedelta
+import os
 import asyncio
 from dotenv import load_dotenv
-import os
 
 load_dotenv()
 
@@ -13,6 +13,7 @@ GUILD = int(os.getenv("GUILD"))
 ADMIN = int(os.getenv("ADMIN"))
 FORUM_CHANNEL = int(os.getenv("FORUM_CHANNEL"))
 EXAM_CHANNEL = int(os.getenv("EXAM_CHANNEL"))
+STAFF_CHANNEL = int(os.getenv("STAFF_CHANNEL"))
 
 app = lightbulb.BotApp(TOKEN,
                        intents=hikari.Intents.ALL,
