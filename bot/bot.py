@@ -27,7 +27,7 @@ async def on_starting(event: hikari.StartingEvent) -> None:
     app.d.admin = await app.rest.fetch_user(ADMIN)
 
 
-def is_today(dt: datetime.datetime) -> bool:
+def is_today(dt: datetime) -> bool:
     """
     Check if the given datetime object corresponds to today's date.
 
