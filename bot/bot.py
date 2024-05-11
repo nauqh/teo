@@ -27,6 +27,19 @@ async def on_starting(event: hikari.StartingEvent) -> None:
     app.d.admin = await app.rest.fetch_user(ADMIN)
 
 
+def is_today(dt: datetime.datetime) -> bool:
+    """
+    Check if the given datetime object corresponds to today's date.
+
+    Parameters:
+        dt (datetime.datetime): The datetime object to check.
+
+    Returns:
+        bool: True if the datetime object corresponds to today's date, False otherwise.
+    """
+    return dt.date() == datetime.now().date()
+
+
 async def check_threads():
     CHECK_INTERVAL = 900  # 15min
     while True:
@@ -34,9 +47,8 @@ async def check_threads():
         threads = [
             thread for thread in await app.rest.fetch_active_threads(GUILD)
             if isinstance(thread, hikari.GuildThreadChannel) and
-            thread.parent_id == FORUM_CHANNEL and thread.created_at.date() in
-            [datetime.now().date(),
-             datetime.now().date() - timedelta(days=1)]
+            thread.parent_id == FORUM_CHANNEL and
+            is_today(thread.created_at)
         ]
         for thread in threads:
             messages: list[hikari.Message] = await thread.fetch_history()
@@ -61,7 +73,6 @@ async def check_threads():
                     content=(
                         "<@&1194665960376901773> "
                         "<@1214095592372969505> "
-                        "<@815706256463364116> "
                         "this thread remains unresolved for more than 15min"),
                     embed=embed)
 
@@ -71,24 +82,24 @@ async def check_exam_requests():
     while True:
         await asyncio.sleep(CHECK_INTERVAL)
         messages = await app.rest.fetch_messages(EXAM_CHANNEL).take_while(
-            lambda message: message.created_at.date() == datetime.now().date()
+            lambda message: is_today(message.created_at)
         )
 
         for message in messages:
             author = await app.rest.fetch_member(GUILD, message.author.id)
-            # # Filter messages from learner (not have TA role) and has no reactions
+            # Filter messages from learner (not have TA role) and has no reactions
             if 1194665960376901773 not in [role.id for role in author.get_roles()] and not message.reactions:
                 print(
                     f"Request exam from {message.author} has not been resolved")
 
 
-@ app.listen(hikari.StartedEvent)
+@app.listen(hikari.StartedEvent)
 async def on_started(event: hikari.StartedEvent) -> None:
     asyncio.create_task(check_threads())
     asyncio.create_task(check_exam_requests())
 
 
-@ app.listen(lightbulb.CommandErrorEvent)
+@app.listen(lightbulb.CommandErrorEvent)
 async def on_error(event: lightbulb.CommandErrorEvent) -> None:
     exception = event.exception
     if isinstance(exception, lightbulb.CheckFailure):
