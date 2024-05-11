@@ -75,8 +75,8 @@ async def check_exam_requests():
     channel = await app.rest.fetch_messages(EXAM_CHANNEL)
     while True:
         await asyncio.sleep(CHECK_INTERVAL)
-        messages = channel.take_while(
-            lambda message: is_today(message.created_at)
+        messages = await app.rest.fetch_messages(EXAM_CHANNEL).take_while(
+            lambda message: message.created_at.date() == datetime.now().date()
         )
 
         for message in messages:
