@@ -34,7 +34,7 @@ def is_today(dt: datetime) -> bool:
 
 
 async def check_threads():
-    CHECK_INTERVAL = 900  # 15min
+    CHECK_INTERVAL = 1000  # 15min
     while True:
         await asyncio.sleep(CHECK_INTERVAL)
         threads = [
@@ -71,7 +71,7 @@ async def check_threads():
 
 
 async def check_exam_requests():
-    CHECK_INTERVAL = 900
+    CHECK_INTERVAL = 1000
     channel = await app.rest.fetch_messages(EXAM_CHANNEL)
     while True:
         await asyncio.sleep(CHECK_INTERVAL)
