@@ -15,11 +15,13 @@ FORUM_CHANNEL = int(os.getenv("FORUM_CHANNEL"))
 EXAM_CHANNEL = int(os.getenv("EXAM_CHANNEL"))
 STAFF_CHANNEL = int(os.getenv("STAFF_CHANNEL"))
 
-app = lightbulb.BotApp(TOKEN,
-                       intents=hikari.Intents.ALL,
-                       default_enabled_guilds=GUILD,
-                       help_slash_command=True,
-                       banner=None)
+app = lightbulb.BotApp(
+    TOKEN,
+    intents=hikari.Intents.ALL,
+    default_enabled_guilds=GUILD,
+    help_slash_command=True,
+    banner=None
+)
 
 
 @app.listen(hikari.StartingEvent)
@@ -28,15 +30,6 @@ async def on_starting(event: hikari.StartingEvent) -> None:
 
 
 def is_today(dt: datetime) -> bool:
-    """
-    Check if the given datetime object corresponds to today's date.
-
-    Parameters:
-        dt (datetime.datetime): The datetime object to check.
-
-    Returns:
-        bool: True if the datetime object corresponds to today's date, False otherwise.
-    """
     return dt.date() == datetime.now().date()
 
 
@@ -79,9 +72,10 @@ async def check_threads():
 
 async def check_exam_requests():
     CHECK_INTERVAL = 900
+    channel = await app.rest.fetch_messages(EXAM_CHANNEL)
     while True:
         await asyncio.sleep(CHECK_INTERVAL)
-        messages = await app.rest.fetch_messages(EXAM_CHANNEL).take_while(
+        messages = channel.take_while(
             lambda message: is_today(message.created_at)
         )
 
@@ -89,8 +83,20 @@ async def check_exam_requests():
             author = await app.rest.fetch_member(GUILD, message.author.id)
             # Filter messages from learner (not have TA role) and has no reactions
             if 1194665960376901773 not in [role.id for role in author.get_roles()] and not message.reactions:
-                print(
-                    f"Request exam from {message.author} has not been resolved")
+                embed = hikari.Embed(
+                    title=message.name,
+                    description=message.content,
+                    color="#118ab2",
+                    url=f"https://discord.com/channels/{channel.guild_id}/{channel.id}"
+                ).set_footer(text=f"Posted by {author.global_name}",
+                             icon=author.avatar_url)
+                await app.rest.create_message(
+                    1237424754739253279,
+                    content=(
+                        "<@&1194665960376901773> "
+                        "<@1214095592372969505> "
+                        "this exam request remains unresolved for more than 15min"),
+                    embed=embed)
 
 
 @app.listen(hikari.StartedEvent)
