@@ -88,8 +88,9 @@ async def check_exam_requests():
 
 @app.listen(hikari.StartedEvent)
 async def on_started(event: hikari.StartedEvent) -> None:
-    asyncio.create_task(check_threads())
-    asyncio.create_task(check_exam_requests())
+    # asyncio.create_task(check_threads())
+    # asyncio.create_task(check_exam_requests())
+    ...
 
 
 @app.listen(lightbulb.CommandErrorEvent)
