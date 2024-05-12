@@ -2,8 +2,8 @@ import bot
 import hikari
 import lightbulb
 from datetime import datetime
-from utils.embed import noti_embed
 from config import Config as cf
+from bot.utils.embed import noti_embed
 
 import asyncio
 
