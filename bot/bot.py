@@ -27,9 +27,7 @@ def is_today(dt: datetime) -> bool:
 
 
 async def check_threads():
-    CHECK_INTERVAL = 1000  # 15min
     while True:
-        await asyncio.sleep(CHECK_INTERVAL)
         threads = [
             thread for thread in await app.rest.fetch_active_threads(cf.GUILD)
             if isinstance(thread, hikari.GuildThreadChannel) and
@@ -60,10 +58,8 @@ async def check_threads():
 
 
 async def check_exam_requests():
-    CHECK_INTERVAL = 1000
     channel = await app.rest.fetch_messages(cf.EXAM_CHANNEL)
     while True:
-        await asyncio.sleep(CHECK_INTERVAL)
         messages = await app.rest.fetch_messages(cf.EXAM_CHANNEL).take_while(
             lambda message: message.created_at.date() == datetime.now().date()
         )
@@ -88,9 +84,10 @@ async def check_exam_requests():
 
 @app.listen(hikari.StartedEvent)
 async def on_started(event: hikari.StartedEvent) -> None:
-    # asyncio.create_task(check_threads())
-    # asyncio.create_task(check_exam_requests())
-    ...
+    asyncio.create_task(check_threads())
+    asyncio.create_task(check_exam_requests())
+    CHECK_INTERVAL = 1000  # 15min
+    await asyncio.sleep(CHECK_INTERVAL)
 
 
 @app.listen(lightbulb.CommandErrorEvent)
