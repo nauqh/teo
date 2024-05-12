@@ -34,7 +34,7 @@ async def check_threads():
             thread for thread in await app.rest.fetch_active_threads(cf.GUILD)
             if isinstance(thread, hikari.GuildThreadChannel) and
             thread.parent_id == cf.FORUM_CHANNEL and
-            is_today(thread.created_at)
+            thread.created_at.date() == datetime.now().date()
         ]
         for thread in threads:
             messages: list[hikari.Message] = await thread.fetch_history()
@@ -72,7 +72,6 @@ async def check_exam_requests():
             author = await app.rest.fetch_member(cf.GUILD, message.author.id)
             # Filter messages from learner (not have TA role) and has no reactions
             if 1194665960376901773 not in [role.id for role in author.get_roles()] and not message.reactions:
-
                 embed = noti_embed(
                     message.name, message.content,
                     f"https://discord.com/channels/{channel.guild_id}/{channel.id}", author)
