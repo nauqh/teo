@@ -18,6 +18,8 @@ app = lightbulb.BotApp(
     banner=None
 )
 
+app.load_extensions_from("./bot/extensions", must_exist=True)
+
 
 def today():
     gmt7 = pytz.timezone('Asia/Bangkok')
