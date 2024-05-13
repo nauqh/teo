@@ -27,7 +27,7 @@ def is_today(dt: datetime) -> bool:
 
 
 async def check_threads():
-    CHECK_INTERVAL = 1000
+    CHECK_INTERVAL = 1800
     while True:
         await asyncio.sleep(CHECK_INTERVAL)
         threads = [
