@@ -8,7 +8,7 @@ from bot.utils.embed import noti_embed
 
 import asyncio
 
-cf = Config('prod')
+cf = Config('dev')
 
 app = lightbulb.BotApp(
     cf.TOKEN,
@@ -34,7 +34,7 @@ async def check_threads(
     forum_channel: int,
     staff_channel: int
 ):
-    CHECK_INTERVAL = 5
+    CHECK_INTERVAL = 10
     while True:
         await asyncio.sleep(CHECK_INTERVAL)
         threads = [
@@ -56,10 +56,15 @@ async def check_threads(
                 if attachments:
                     embed.set_image(attachments[0])
 
+                if guild == 957854915194126336:
+                    ta_role = 1194665960376901773
+                else:
+                    ta_role = 912553106124972083
+
                 await app.rest.create_message(
                     staff_channel,
                     content=(
-                        "<@&1194665960376901773> "
+                        f"<@&{ta_role}> "
                         f"<@{cf.ADMIN}> "
                         "this thread remains unresolved for more than 15min"),
                     embed=embed
@@ -96,14 +101,13 @@ async def check_exam_requests():
 @app.listen(hikari.StartedEvent)
 async def on_started(event: hikari.StartedEvent) -> None:
     # Check question center
-    # asyncio.create_task(check_threads(
-    #     cf.DATA.GUILD, cf.DATA.FORUM_CHANNEL, cf.DATA.STAFF_CHANNEL))
-    # asyncio.create_task(check_threads(
-    #     cf.FSW.GUILD, cf.FSW.FORUM_CHANNEL, cf.FSW.STAFF_CHANNEL))
+    asyncio.create_task(check_threads(
+        cf.DATA.GUILD, cf.DATA.FORUM_CHANNEL, cf.DATA.STAFF_CHANNEL))
+    asyncio.create_task(check_threads(
+        cf.FSW.GUILD, cf.FSW.FORUM_CHANNEL, cf.FSW.STAFF_CHANNEL))
 
-    # # Check exam request
-    # asyncio.create_task(check_exam_requests())
-    ...
+    # Check exam request
+    asyncio.create_task(check_exam_requests())
 
 
 @app.listen(lightbulb.CommandErrorEvent)
