@@ -13,7 +13,7 @@ class Config:
     def __init__(self, mode: str):
 
         primary, secondary = self.config_mapping.get(mode, {}).values()
-        self.TOKEN = os.getenv('TOKEN_DEV' if mode == 'dev' else 'PROD')
+        self.TOKEN = os.getenv('TOKEN_DEV' if mode == 'dev' else 'TOKEN_PROD')
         self.ADMIN = int(os.getenv('ADMIN'))
         self._load_config(primary)
         self._load_config(secondary)
