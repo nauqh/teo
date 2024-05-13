@@ -84,10 +84,11 @@ async def check_exam_requests():
 
 @app.listen(hikari.StartedEvent)
 async def on_started(event: hikari.StartedEvent) -> None:
-    asyncio.create_task(check_threads())
-    asyncio.create_task(check_exam_requests())
-    CHECK_INTERVAL = 1000  # 15min
-    await asyncio.sleep(CHECK_INTERVAL)
+    # asyncio.create_task(check_threads())
+    # asyncio.create_task(check_exam_requests())
+    # CHECK_INTERVAL = 1000  # 15min
+    # await asyncio.sleep(CHECK_INTERVAL)
+    ...
 
 
 @app.listen(lightbulb.CommandErrorEvent)
