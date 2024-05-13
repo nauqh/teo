@@ -96,13 +96,14 @@ async def check_exam_requests():
 @app.listen(hikari.StartedEvent)
 async def on_started(event: hikari.StartedEvent) -> None:
     # Check question center
-    asyncio.create_task(check_threads(
-        cf.DATA.GUILD, cf.DATA.FORUM_CHANNEL, cf.DATA.STAFF_CHANNEL))
-    asyncio.create_task(check_threads(
-        cf.FSW.GUILD, cf.FSW.FORUM_CHANNEL, cf.FSW.STAFF_CHANNEL))
+    # asyncio.create_task(check_threads(
+    #     cf.DATA.GUILD, cf.DATA.FORUM_CHANNEL, cf.DATA.STAFF_CHANNEL))
+    # asyncio.create_task(check_threads(
+    #     cf.FSW.GUILD, cf.FSW.FORUM_CHANNEL, cf.FSW.STAFF_CHANNEL))
 
-    # Check exam request
-    asyncio.create_task(check_exam_requests())
+    # # Check exam request
+    # asyncio.create_task(check_exam_requests())
+    ...
 
 
 @app.listen(lightbulb.CommandErrorEvent)
