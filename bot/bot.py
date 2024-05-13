@@ -27,7 +27,9 @@ def is_today(dt: datetime) -> bool:
 
 
 async def check_threads():
+    CHECK_INTERVAL = 1000
     while True:
+        await asyncio.sleep(CHECK_INTERVAL)
         threads = [
             thread for thread in await app.rest.fetch_active_threads(cf.GUILD)
             if isinstance(thread, hikari.GuildThreadChannel) and
@@ -52,6 +54,7 @@ async def check_threads():
                     content=(
                         "<@&1194665960376901773> "
                         "<@1214095592372969505> "
+                        "<@1214041211183038504> "
                         "this thread remains unresolved for more than 15min"),
                     embed=embed
                 )
@@ -59,7 +62,9 @@ async def check_threads():
 
 async def check_exam_requests():
     channel = await app.rest.fetch_messages(cf.EXAM_CHANNEL)
+    CHECK_INTERVAL = 1000
     while True:
+        await asyncio.sleep(CHECK_INTERVAL)
         messages = await app.rest.fetch_messages(cf.EXAM_CHANNEL).take_while(
             lambda message: message.created_at.date() == datetime.now().date()
         )
@@ -77,6 +82,7 @@ async def check_exam_requests():
                     content=(
                         "<@&1194665960376901773> "
                         "<@1214095592372969505> "
+                        "<@1214041211183038504> "
                         "this exam request remains unresolved for more than 15min"),
                     embed=embed
                 )
@@ -84,11 +90,8 @@ async def check_exam_requests():
 
 @app.listen(hikari.StartedEvent)
 async def on_started(event: hikari.StartedEvent) -> None:
-    # asyncio.create_task(check_threads())
-    # asyncio.create_task(check_exam_requests())
-    # CHECK_INTERVAL = 1000  # 15min
-    # await asyncio.sleep(CHECK_INTERVAL)
-    ...
+    asyncio.create_task(check_threads())
+    asyncio.create_task(check_exam_requests())
 
 
 @app.listen(lightbulb.CommandErrorEvent)
