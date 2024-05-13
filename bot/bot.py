@@ -1,14 +1,14 @@
 import bot
 import hikari
 import lightbulb
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
 from bot.config import Config
 from bot.utils.embed import noti_embed
 
 import asyncio
 
-# cf = Config('prod')
+cf = Config('prod')
 
 app = lightbulb.BotApp(
     cf.TOKEN,
@@ -24,6 +24,11 @@ def today():
     return datetime.now().astimezone(gmt7).date()
 
 
+def yesterday():
+    gmt7 = pytz.timezone('Asia/Bangkok')
+    return (datetime.now().astimezone(gmt7) - timedelta(days=1)).date()
+
+
 @app.listen(hikari.StartingEvent)
 async def on_starting(event: hikari.StartingEvent) -> None:
     app.d.admin = await app.rest.fetch_user(cf.ADMIN)
@@ -34,14 +39,14 @@ async def check_threads(
     forum_channel: int,
     staff_channel: int
 ):
-    CHECK_INTERVAL = 10
+    CHECK_INTERVAL = 1500
     while True:
         await asyncio.sleep(CHECK_INTERVAL)
         threads = [
             thread for thread in await app.rest.fetch_active_threads(guild)
             if isinstance(thread, hikari.GuildThreadChannel) and
             thread.parent_id == forum_channel and
-            thread.created_at.date() == today()
+            thread.created_at.date() in [today(), yesterday()]
         ]
         for thread in threads:
             messages: list[hikari.Message] = await thread.fetch_history()
@@ -73,7 +78,7 @@ async def check_threads(
 
 async def check_exam_requests():
     channel = await app.rest.fetch_channel(cf.DATA.EXAM_CHANNEL)
-    CHECK_INTERVAL = 5
+    CHECK_INTERVAL = 1200
     while True:
         await asyncio.sleep(CHECK_INTERVAL)
         messages = await app.rest.fetch_messages(cf.DATA.EXAM_CHANNEL).take_while(
