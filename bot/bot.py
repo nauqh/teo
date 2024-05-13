@@ -8,7 +8,7 @@ from bot.utils.embed import noti_embed
 
 import asyncio
 
-cf = Config('dev')
+cf = Config('prod')
 
 app = lightbulb.BotApp(
     cf.TOKEN,
