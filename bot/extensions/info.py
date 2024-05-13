@@ -1,4 +1,5 @@
 import lightbulb
+import hikari
 from hikari import Embed
 from bot.utils.checks import valid_learner
 from datetime import datetime, timezone
@@ -59,6 +60,37 @@ async def resource(ctx: lightbulb.Context):
         .add_field(
             "**Plotly tutorial**",
             "https://youtu.be/GGL6U0k8WYA?si=U_YTPyxLKaPTg4dn"
+        )
+        .set_footer(
+            text=f"Requested by {ctx.author.username}",
+            icon=ctx.author.avatar_url
+        )
+    )
+    await ctx.respond(embed)
+
+
+@plugin.command()
+@lightbulb.command('info', 'Bot information', auto_defer=True)
+@lightbulb.implements(lightbulb.SlashCommand)
+async def info(ctx: lightbulb.Context):
+    bot: hikari.Member = ctx.app.rest.fetch_member(
+        ctx.guild_id, 1225375931300970556)
+    embed = (
+        Embed(
+            title=f"✨ User Info",
+            colour="#06d6a0",
+            url="https://teodocs.vercel.app/",
+            timestamp=datetime.now()
+        )
+        .set_thumbnail(bot.avatar_url)
+        .add_field(
+            "**Basic**",
+            f"Username: {bot.display_name}\n"
+            f"User ID: {bot.id}\n"
+        )
+        .add_field(
+            "**Regex**",
+            f"Register date: {bot.created_at.date()}"
         )
         .set_footer(
             text=f"Requested by {ctx.author.username}",
