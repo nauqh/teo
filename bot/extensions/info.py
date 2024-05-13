@@ -72,7 +72,7 @@ async def resource(ctx: lightbulb.Context):
 @plugin.command()
 @lightbulb.command('info', 'Bot information', auto_defer=True)
 @lightbulb.implements(lightbulb.SlashCommand)
-async def info(ctx: lightbulb.Context):
+async def get_info(ctx: lightbulb.Context):
     bot: hikari.Member = ctx.app.rest.fetch_member(
         ctx.guild_id, 1225375931300970556)
     embed = (
