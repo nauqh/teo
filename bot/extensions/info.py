@@ -83,7 +83,7 @@ async def get_info(ctx: lightbulb.Context):
             title=f"✨ User Info",
             colour="#118ab2",
             url="https://teodocs.vercel.app/",
-            description="T.e.o is a multifunctional bot designed to enhance forum management. With its advanced moderation and logging capabilities, it monitors forum activity, promoting moderator accountability and easing the workload for staff members by automating query filtering.",
+            description="T.e.o is a multifunctional bot designed to enhance forum management.",
             timestamp=datetime.now().astimezone(pytz.timezone('Asia/Ho_Chi_Minh'))
         )
         .set_thumbnail(bot.avatar_url)
