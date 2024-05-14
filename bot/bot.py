@@ -95,6 +95,33 @@ async def check_exam_requests():
                 )
 
 
+async def check_exam_requests2():
+    channel = await app.rest.fetch_channel(cf.FSW.EXAM_CHANNEL)
+    CHECK_INTERVAL = 900
+    while True:
+        await asyncio.sleep(CHECK_INTERVAL)
+        messages = await app.rest.fetch_messages(cf.FSW.EXAM_CHANNEL).take_while(
+            lambda message: message.created_at.date() == today()
+        )
+
+        for message in messages:
+            author = await app.rest.fetch_member(cf.FSW.GUILD, message.author.id)
+            # Filter messages from learner (not have TA role) and has no reactions
+            if 913338307113529354 not in [role.id for role in author.get_roles()] and not message.reactions:
+                embed = noti_embed(
+                    channel.name, message.content,
+                    f"https://discord.com/channels/{channel.guild_id}/{channel.id}", author)
+
+                await app.rest.create_message(
+                    cf.FSW.STAFF_CHANNEL,
+                    content=(
+                        "<@&912553106124972083> "
+                        f"<@{cf.ADMIN}> "
+                        "this exam request remains unresolved for more than 15min"),
+                    embed=embed
+                )
+
+
 @app.listen(hikari.StartedEvent)
 async def on_started(event: hikari.StartedEvent) -> None:
     # Check question center
@@ -105,6 +132,7 @@ async def on_started(event: hikari.StartedEvent) -> None:
 
     # Check exam request
     asyncio.create_task(check_exam_requests())
+    asyncio.create_task(check_exam_requests2())
 
 
 @app.listen(lightbulb.CommandErrorEvent)
