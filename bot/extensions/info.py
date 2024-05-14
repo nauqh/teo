@@ -3,6 +3,7 @@ import hikari
 from hikari import Embed
 from bot.utils.checks import valid_learner
 from datetime import datetime, timezone
+import pytz
 
 
 plugin = lightbulb.Plugin("Info", "📝 Course info")
@@ -80,7 +81,7 @@ async def get_info(ctx: lightbulb.Context):
             title=f"✨ User Info",
             colour="#06d6a0",
             url="https://teodocs.vercel.app/",
-            timestamp=datetime.now()
+            timestamp=datetime.now().astimezone(pytz.timezone('Asia/Ho_Chi_Minh'))
         )
         .set_thumbnail(bot.avatar_url)
         .add_field(
