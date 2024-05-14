@@ -1,10 +1,10 @@
 import bot
 import hikari
 import lightbulb
-from datetime import datetime, timedelta
-import pytz
+
 from bot.config import Config
 from bot.utils.embed import noti_embed
+from bot.utils.helpers import today, yesterday
 
 import asyncio
 
@@ -19,16 +19,6 @@ app = lightbulb.BotApp(
 )
 
 app.load_extensions_from("./bot/extensions", must_exist=True)
-
-
-def today():
-    gmt7 = pytz.timezone('Asia/Bangkok')
-    return datetime.now().astimezone(gmt7).date()
-
-
-def yesterday():
-    gmt7 = pytz.timezone('Asia/Bangkok')
-    return (datetime.now().astimezone(gmt7) - timedelta(days=1)).date()
 
 
 @app.listen(hikari.StartingEvent)
