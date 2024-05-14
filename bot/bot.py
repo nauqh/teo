@@ -97,7 +97,7 @@ async def check_exam_requests():
 
 async def check_exam_requests2():
     channel = await app.rest.fetch_channel(cf.FSW.EXAM_CHANNEL)
-    CHECK_INTERVAL = 300
+    CHECK_INTERVAL = 1200
     while True:
         await asyncio.sleep(CHECK_INTERVAL)
         messages = await app.rest.fetch_messages(cf.FSW.EXAM_CHANNEL).take_while(
