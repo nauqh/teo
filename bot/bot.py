@@ -97,7 +97,7 @@ async def check_exam_requests():
 
 async def check_exam_requests2():
     channel = await app.rest.fetch_channel(cf.FSW.EXAM_CHANNEL)
-    CHECK_INTERVAL = 1200
+    CHECK_INTERVAL = 300
     while True:
         await asyncio.sleep(CHECK_INTERVAL)
         messages = await app.rest.fetch_messages(cf.FSW.EXAM_CHANNEL).take_while(
@@ -107,7 +107,7 @@ async def check_exam_requests2():
         for message in messages:
             author = await app.rest.fetch_member(cf.FSW.GUILD, message.author.id)
             # Filter messages from learner (not have TA role) and has no reactions
-            if 913338307113529354 not in [role.id for role in author.get_roles()] and not message.reactions:
+            if 912553106124972083 not in [role.id for role in author.get_roles()] and not message.reactions:
                 embed = noti_embed(
                     channel.name, message.content,
                     f"https://discord.com/channels/{channel.guild_id}/{channel.id}", author)
