@@ -76,6 +76,8 @@ async def resource(ctx: lightbulb.Context):
 async def get_info(ctx: lightbulb.Context):
     bot: hikari.Member = await ctx.app.rest.fetch_member(
         ctx.guild_id, 1225375931300970556)
+
+    roles = [f"<@&{id}>" for id in bot.role_ids]
     embed = (
         Embed(
             title=f"✨ User Info",
@@ -86,12 +88,13 @@ async def get_info(ctx: lightbulb.Context):
         .set_thumbnail(bot.avatar_url)
         .add_field(
             "**Basic**",
-            f"Username: {bot.display_name}\n"
+            f"Username: <@{bot.id}>\n"
             f"User ID: {bot.id}\n"
         )
         .add_field(
-            "**Regex**",
-            f"Register date: {bot.created_at.date()}"
+            "**Events**",
+            f"Register date: {bot.created_at.date()}\n"
+            f"Roles: {' '.join(roles)}"
         )
         .set_footer(
             text=f"Requested by {ctx.author.username}",
