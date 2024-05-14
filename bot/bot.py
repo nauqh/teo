@@ -68,54 +68,32 @@ async def check_threads(
                 )
 
 
-async def check_exam_requests():
-    channel = await app.rest.fetch_channel(cf.DATA.EXAM_CHANNEL)
+async def check_exam_requests(guild, exam_channel, staff_channel):
+    channel = await app.rest.fetch_channel(exam_channel)
     CHECK_INTERVAL = 1200
     while True:
         await asyncio.sleep(CHECK_INTERVAL)
-        messages = await app.rest.fetch_messages(cf.DATA.EXAM_CHANNEL).take_while(
+        messages = await app.rest.fetch_messages(exam_channel).take_while(
             lambda message: message.created_at.date() == today()
         )
 
         for message in messages:
-            author = await app.rest.fetch_member(cf.DATA.GUILD, message.author.id)
+            author = await app.rest.fetch_member(guild, message.author.id)
+
+            if guild == 957854915194126336:
+                ta_role = 1194665960376901773
+            else:
+                ta_role = 912553106124972083
             # Filter messages from learner (not have TA role) and has no reactions
-            if 1194665960376901773 not in [role.id for role in author.get_roles()] and not message.reactions:
+            if ta_role not in [role.id for role in author.get_roles()] and not message.reactions:
                 embed = noti_embed(
                     channel.name, message.content,
                     f"https://discord.com/channels/{channel.guild_id}/{channel.id}", author)
 
                 await app.rest.create_message(
-                    cf.DATA.STAFF_CHANNEL,
+                    staff_channel,
                     content=(
-                        "<@&1194665960376901773> "
-                        f"<@{cf.ADMIN}> "
-                        "this exam request remains unresolved for more than 15min"),
-                    embed=embed
-                )
-
-
-async def check_exam_requests2():
-    channel = await app.rest.fetch_channel(cf.FSW.EXAM_CHANNEL)
-    CHECK_INTERVAL = 1200
-    while True:
-        await asyncio.sleep(CHECK_INTERVAL)
-        messages = await app.rest.fetch_messages(cf.FSW.EXAM_CHANNEL).take_while(
-            lambda message: message.created_at.date() == today()
-        )
-
-        for message in messages:
-            author = await app.rest.fetch_member(cf.FSW.GUILD, message.author.id)
-            # Filter messages from learner (not have TA role) and has no reactions
-            if 912553106124972083 not in [role.id for role in author.get_roles()] and not message.reactions:
-                embed = noti_embed(
-                    channel.name, message.content,
-                    f"https://discord.com/channels/{channel.guild_id}/{channel.id}", author)
-
-                await app.rest.create_message(
-                    cf.FSW.STAFF_CHANNEL,
-                    content=(
-                        "<@&912553106124972083> "
+                        f"<@&{ta_role}> "
                         f"<@{cf.ADMIN}> "
                         "this exam request remains unresolved for more than 15min"),
                     embed=embed
@@ -131,8 +109,10 @@ async def on_started(event: hikari.StartedEvent) -> None:
         cf.FSW.GUILD, cf.FSW.FORUM_CHANNEL, cf.FSW.STAFF_CHANNEL))
 
     # Check exam request
-    asyncio.create_task(check_exam_requests())
-    asyncio.create_task(check_exam_requests2())
+    asyncio.create_task(check_exam_requests(
+        cf.DATA.GUILD, cf.DATA.EXAM_CHANNEL, cf.DATA.STAFF_CHANNEL))
+    asyncio.create_task(check_exam_requests(
+        cf.FSW.GUILD, cf.FSW.EXAM_CHANNEL, cf.FSW.STAFF_CHANNEL))
 
 
 @app.listen(lightbulb.CommandErrorEvent)
