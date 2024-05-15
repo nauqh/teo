@@ -68,7 +68,11 @@ async def check_threads(
                 )
 
 
-async def check_exam_requests(guild, exam_channel, staff_channel):
+async def check_exam_requests(
+    guild: int,
+    exam_channel: int,
+    staff_channel: int
+):
     channel = await app.rest.fetch_channel(exam_channel)
     CHECK_INTERVAL = 1200
     while True:
@@ -85,7 +89,9 @@ async def check_exam_requests(guild, exam_channel, staff_channel):
             else:
                 ta_role = 912553106124972083
             # Filter messages from learner (not have TA role) and has no reactions
-            if ta_role not in [role.id for role in author.get_roles()] and not message.reactions:
+            if (ta_role not in [role.id for role in author.get_roles()] and
+                    not message.reactions
+                ):
                 embed = noti_embed(
                     channel.name, message.content,
                     f"https://discord.com/channels/{channel.guild_id}/{channel.id}", author)
@@ -98,6 +104,8 @@ async def check_exam_requests(guild, exam_channel, staff_channel):
                         "this exam request remains unresolved for more than 15min"),
                     embed=embed
                 )
+
+                await message.add_reaction("⌛")
 
 
 @app.listen(hikari.StartedEvent)
