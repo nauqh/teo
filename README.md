@@ -1,8 +1,3 @@
----
-hide:
-  - navigation
-title: Home
----
 # T.e.o - The Excellent Organizer 
 
 ![Version](https://img.shields.io/badge/Latest%20Version-1.0.0.dev-%2300b4d8.svg?&style=for-the-badge&logo=git&logoColor=white)
@@ -12,7 +7,7 @@ title: Home
 ![](./assets/poros.jpg)
 
 ## About the project
-T.e.o, formerly known as [**P.o.r.o**]("Productive Organizer and Resource Orchestrator"), is a multifunctional bot designed to enhance forum management. With its advanced moderation and logging capabilities, it meticulously monitors forum activity, promoting moderator accountability and easing the workload for staff members by automating query filtering. 
+T.e.o, is a multifunctional bot designed to enhance forum management. With its advanced moderation and logging capabilities, it meticulously monitors forum activity, promoting moderator accountability and easing the workload for staff members by automating query filtering. 
 
 Moreover, T.e.o excels in proactive engagement by sending timely reminders to TAs staff regarding unresolved queries as well as generating comprehensive monthly reports on forum interactions. Its user-friendly interface ensures efficient and swift operation, making it an indispensable tool for forum management.
 
