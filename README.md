@@ -14,9 +14,11 @@ Moreover, T.e.o excels in proactive engagement by sending timely reminders to TA
 ## Interoperability
 T.e.o is probably a useful bot for your server if:
 
-- [x] Your server is active and needs automatic moderation
-- [x] You want to give more power to your moderators
-- [x] You need a long-term punishment management system
+✅ Your server is active and needs automatic moderation
+
+✅ You want to give more power to your moderators
+
+✅ You need a long-term punishment management system
 
 T.e.o is probably NOT the right bot for your server if:
 
