@@ -28,8 +28,17 @@ T.e.o is probably NOT the right bot for your server if:
 
 If any of the above apply, then T.e.o will probably not be the best bot for your server, and you should consider searching on [discord.bots.gg](https://discord.bots.gg) for a different moderation bot.
 
-## Techstack
+## Main functionalities
 
+### 1. Notify unresolved threads
+Teo sends a message to the `staff-channel` about threads that have not been resolved for over 15 minutes. The message will look like this:
+
+![](./assets/send_notification.png)
+
+### 2. Monthly thread data (under development)
+Additionally, Teo is responsible for collecting data on `question-center` forum interactions on a monthly basis. This data will be used to generate reports that detail the activities of both learners and staff on Discord.
+
+## Techstack
 The repository structure follows the conceptual architecture of Teobot, which consists of three loosely-coupled sub-systems.
 
 To briefly explain these three sub-systems:
