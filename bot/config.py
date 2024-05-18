@@ -5,6 +5,17 @@ load_dotenv()
 
 
 class Config:
+    """
+    Configuration manager for loading environment settings.
+
+    Attributes:
+        TOKEN (str): The bot token
+        ADMIN (int): The admin discord id
+
+    Methods:
+        __init__(mode: str): Initializes the configuration based on the given environment. 
+        _load_config(config_name: str): Loads the configuration for a given environment name.
+    """
     config_mapping = {
         'dev': {'primary': 'hym', 'secondary': 'monash'},
         'prod': {'primary': 'data', 'secondary': 'fsw'}

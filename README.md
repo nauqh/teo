@@ -47,7 +47,31 @@ To briefly explain these three sub-systems:
 - **[Storage][storage]** relies on `PostgreSQL` as a robust and feature-rich database system for persistent storage of forum queries and session log, while leveraging `SQLAlchemy` as the ORM tool for simplified interaction with the database.
 - **[Logger][logger]** utilizes built-in `Logging` to record and manage thread events, errors, and messages within the server. It employs different log levels to categorize messages, providing a comprehensive overview of system activities.
 
-## 
+## Installation
+Open a terminal and clone the repository 
+Create a `.env` file and fill in with this template 
+```sh
+TOKEN_PROD=YOUR_BOT_TOKEN
+ADMIN=ADMIN_DISCORD_ID
+
+# You can customize with Primary and Secondary server
+# Data server
+DATA_GUILD=GUILD_ID
+DATA_FORUM_CHANNEL=FORUM_CHANNEL_ID
+DATA_EXAM_CHANNEL=STAFF_CHANNEL_ID
+DATA_STAFF_CHANNEL=STAFF_CHANNEL_ID
+
+# Fsw server
+FSW_GUILD=
+FSW_FORUM_CHANNEL=
+FSW_EXAM_CHANNEL=
+FSW_STAFF_CHANNEL=
+```
+
+Run the bot using the following command
+```sh
+python -Om bot
+```
 
 ## Documentation
 Since Teobot is built on the basis of Hikari library, it is essential to look for the library documentation for further implementation. 
