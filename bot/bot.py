@@ -31,7 +31,7 @@ async def check_threads(
     forum_channel: int,
     staff_channel: int
 ):
-    CHECK_INTERVAL = 1500
+    CHECK_INTERVAL = 2000
     while True:
         await asyncio.sleep(CHECK_INTERVAL)
         threads = [
