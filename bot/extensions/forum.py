@@ -3,7 +3,6 @@ import lightbulb
 import pandas as pd
 
 from bot.config import Config
-from ..utils.utils import progress_bar
 from datetime import datetime
 
 cf = Config('prod')
@@ -11,6 +10,16 @@ FORUM_CHANNEL = cf.DATA.FORUM_CHANNEL
 GUILD = cf.DATA.GUILD
 
 plugin = lightbulb.Plugin("Forum", "Question center")
+
+
+def progress_bar(percent: float) -> str:
+    progress = ''
+    for i in range(20):
+        if i == (int)(percent*20):
+            progress += '🔘'
+        else:
+            progress += '▬'
+    return progress
 
 
 def load(bot: lightbulb.BotApp) -> None:
