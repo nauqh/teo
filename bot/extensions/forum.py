@@ -27,7 +27,7 @@ def load(bot: lightbulb.BotApp) -> None:
 
 
 @plugin.command()
-@lightbulb.command('thread', 'Module resources', auto_defer=True)
+@lightbulb.command('threads', 'Get all threads', auto_defer=True)
 @lightbulb.implements(lightbulb.SlashCommand)
 async def get_threads(ctx: lightbulb.Context):
     data: list[hikari.GuildThreadChannel] = []
@@ -60,3 +60,26 @@ async def get_threads(ctx: lightbulb.Context):
 
     df = pd.DataFrame(data)
     df.to_csv("threads_draft.csv", index=False)
+
+    await msg.edit(attachment="threads_draft.csv")
+
+
+@plugin.command()
+@lightbulb.command('members', 'Get all members', auto_defer=True)
+@lightbulb.implements(lightbulb.SlashCommand)
+async def get_members(ctx: lightbulb.Context):
+    data: list[hikari.User] = []
+    guild: hikari.Guild = ctx.get_guild()
+    for uid in guild.get_members():
+        member: hikari.User = guild.get_member(uid)
+        data.append({
+            "id": uid,
+            "name": member.global_name,
+            "is_bot": member.is_bot,
+            "roles": member.role_ids
+        })
+
+    df = pd.DataFrame(data)
+    df.to_csv("members.csv", index=False)
+
+    await ctx.respond(attachment="members.csv")
