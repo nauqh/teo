@@ -83,3 +83,6 @@ Since Teobot is built on the basis of Hikari library, it is essential to look fo
 [storage]: https://docs.python.org/3/library/sqlite3.html
 [logger]: https://docs.python.org/3/library/logging.html
 
+## Coderschool projects 
+- [x] T.e.o - The Excelent Organizer for Discord channel - [Github repo](https://github.com/nauqh/teo)
+- [x]   T.i. - Test Inspector for Automated Exam Grading - [Github repo](https://github.com/nauqh/autograde) 
