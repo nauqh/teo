@@ -2,3 +2,5 @@ hikari
 hikari_lightbulb
 python-dotenv
 pandas
+requests
+apscheduler
