@@ -109,6 +109,7 @@ async def job_post_itviec(url, channel):
 
 @plugin.listener(hikari.StartingEvent)
 async def on_starting(event: hikari.StartingEvent) -> None:
+    # Schedule job_post to run every 30 seconds
     plugin.app.d.scheduler = AsyncIOScheduler(timezone='Asia/Ho_Chi_Minh')
     plugin.app.d.scheduler.start()
     plugin.app.d.scheduler.add_job(job_post, 'cron', second=30, args=[
