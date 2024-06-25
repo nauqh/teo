@@ -66,4 +66,8 @@ def job_embed(job, company, logo, url, level, location, tag):
             "**Tags**",
             f"{tag}"
         )
+        .set_footer(
+            text=f"From ITviec ",
+            icon="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKk8Nc-lBHyDwEMs0drgzArhbsx4Ihq-_DIA&s"
+        )
     )
