@@ -50,12 +50,10 @@ async def job_post(url, channel) -> None:
 @plugin.listener(hikari.StartingEvent)
 async def on_starting(event: hikari.StartingEvent) -> None:
     plugin.app.d.scheduler = AsyncIOScheduler()
-    plugin.app.d.scheduler.add_job(job_post, 'interval', seconds=20, args=[
+    plugin.app.d.scheduler.add_job(job_post, 'cron', hour=9, minute=0, args=[
                                    "https://topdev.vn/viec-lam-it/data-analytics-intern-fresher-junior-kt202", 1255062099118395454])
-    plugin.app.d.scheduler.add_job(job_post, 'interval', seconds=20, args=[
+    plugin.app.d.scheduler.add_job(job_post, 'cron', hour=9, minute=0, args=[
                                    "https://topdev.vn/viec-lam-it/react-javascript-ho-chi-minh-intern-fresher-junior-kt7367,22l79", 1255068486573625394])
-
-    # plugin.app.d.scheduler.add_job(job_post, 'cron', hour=9, minute=0)
 
 
 @plugin.listener(hikari.StartedEvent)
