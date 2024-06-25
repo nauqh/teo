@@ -53,7 +53,7 @@ async def on_starting(event: hikari.StartingEvent) -> None:
     plugin.app.d.scheduler.add_job(job_post, 'cron', hour=9, minute=0, args=[
                                    "https://topdev.vn/viec-lam-it/data-analytics-intern-fresher-junior-kt202", 1255062099118395454])
     plugin.app.d.scheduler.add_job(job_post, 'cron', hour=9, minute=0, args=[
-                                   "https://topdev.vn/viec-lam-it/react-javascript-ho-chi-minh-intern-fresher-junior-kt7367,22l79", 1255068486573625394])
+                                   "https://topdev.vn/viec-lam-it/react-javascript-kt7367,22", 1255068486573625394])
 
 
 @plugin.listener(hikari.StartedEvent)
