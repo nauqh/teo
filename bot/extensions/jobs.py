@@ -24,8 +24,10 @@ async def job_post() -> None:
     - Job location
     - Job tags
     """
+    # response = requests.get(
+    #     "https://topdev.vn/viec-lam-it/react-javascript-ho-chi-minh-intern-fresher-junior-kt7367,22l79")
     response = requests.get(
-        "https://topdev.vn/viec-lam-it/react-javascript-ho-chi-minh-intern-fresher-junior-kt7367,22l79")
+        "https://topdev.vn/viec-lam-it/data-analytics-kt202")
     soup = BeautifulSoup(response.content, 'html.parser')
 
     section = soup.find('section', id='tab-job')
@@ -45,17 +47,17 @@ async def job_post() -> None:
         embed = job_embed(jobs[i], companies[i], logos[i],
                           job_link, level, location, tags[i])
 
-        await plugin.app.rest.create_message(plugin.app.d.config.HYM.STAFF_CHANNEL, embed=embed)
+        await plugin.app.rest.create_message(1255062099118395454, embed=embed)
 
 
-# @plugin.listener(hikari.StartingEvent)
-# async def on_starting(event: hikari.StartingEvent) -> None:
-#     plugin.app.d.scheduler = AsyncIOScheduler()
-#     plugin.app.d.scheduler.add_job(job_post, 'interval', seconds=10)
-#     # plugin.app.d.scheduler.add_job(job_post, 'cron', day_of_week='mon')
-#     # plugin.app.d.scheduler.add_job(job_post, 'cron', hour=9, minute=0)
+@plugin.listener(hikari.StartingEvent)
+async def on_starting(event: hikari.StartingEvent) -> None:
+    plugin.app.d.scheduler = AsyncIOScheduler()
+    # plugin.app.d.scheduler.add_job(job_post, 'interval', seconds=20)
+    # plugin.app.d.scheduler.add_job(job_post, 'cron', day_of_week='mon')
+    plugin.app.d.scheduler.add_job(job_post, 'cron', hour=9, minute=0)
 
 
-# @plugin.listener(hikari.StartedEvent)
-# async def on_started(event: hikari.StartedEvent) -> None:
-#     plugin.app.d.scheduler.start()
+@plugin.listener(hikari.StartedEvent)
+async def on_started(event: hikari.StartedEvent) -> None:
+    plugin.app.d.scheduler.start()

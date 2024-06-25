@@ -45,7 +45,7 @@ def noti_embed(title, description, url, author):
 def job_embed(job, company, logo, url, level, location, tag):
     return (
         Embed(
-            title=f"{job.text.strip().title()}",
+            title=f"{job.text.strip()}",
             description=f"**Company**: {company}",
             colour="#118ab2",
             url=f"https://topdev.vn{url}",
