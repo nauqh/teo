@@ -1,5 +1,6 @@
 from hikari import Embed, GuildChannel, Message, GuildThreadChannel
 from datetime import datetime
+import pytz
 
 color = {
     "Question": "#118ab2",
@@ -38,4 +39,31 @@ def noti_embed(title, description, url, author):
     ).set_footer(
         text=f"Posted by {author.global_name}",
         icon=author.avatar_url
+    )
+
+
+def job_embed(job, company, logo, url, level, location, tag):
+    return (
+        Embed(
+            title=f"{job.text.strip().title()}",
+            description=f"**Company**: {company}",
+            colour="#118ab2",
+            url=f"https://topdev.vn{url}",
+            timestamp=datetime.now().astimezone(pytz.timezone('Asia/Ho_Chi_Minh'))
+        )
+        .set_thumbnail(logo)
+        .add_field(
+            "**Position**",
+            f"{level.text.strip()}",
+            inline=True
+        )
+        .add_field(
+            "**Location**",
+            f"{location.text.strip()}",
+            inline=True
+        )
+        .add_field(
+            "**Tags**",
+            f"{tag}"
+        )
     )

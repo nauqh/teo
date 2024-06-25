@@ -1,13 +1,10 @@
 import lightbulb
 import hikari
-from hikari import Embed
-
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
-import pytz
-
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+
+from bot.utils.embed import job_embed
 
 plugin = lightbulb.Plugin("Jobs", "📝 Job postings")
 
@@ -28,7 +25,7 @@ async def job_post() -> None:
     - Job tags
     """
     response = requests.get(
-        "https://topdev.vn/viec-lam-it/software-engineer-kt8649")
+        "https://topdev.vn/viec-lam-it/react-javascript-ho-chi-minh-intern-fresher-junior-kt7367,22l79")
     soup = BeautifulSoup(response.content, 'html.parser')
 
     section = soup.find('section', id='tab-job')
@@ -41,43 +38,22 @@ async def job_post() -> None:
     jobs = section.find_all('h3', class_='line-clamp-1')
     companies = [company.find('a').text.strip()
                  for company in section.find_all('div', class_='mt-1 line-clamp-1')]
-
     for i in range(len(jobs)):
         job_link = jobs[i].find('a')['href']
         level = descriptions[i].find_all('p')[0]
         location = descriptions[i].find_all('p')[1]
-        embed = (
-            Embed(
-                title=f"{jobs[i].text.strip().title()}",
-                description=f"**Company**: {companies[i]}",
-                colour="#118ab2",
-                url=f"https://topdev.vn{job_link}",
-                timestamp=datetime.now().astimezone(pytz.timezone('Asia/Ho_Chi_Minh'))
-            )
-            .set_thumbnail(logos[i])
-            .add_field(
-                "**Position**",
-                f"{level.text.strip()}",
-                inline=True
-            )
-            .add_field(
-                "**Location**",
-                f"{location.text.strip()}",
-                inline=True
-            )
-            .add_field(
-                "**Tags**",
-                f"{tags[i]}"
-            )
-        )
-        await plugin.app.rest.create_message(872335315468156978, embed=embed)
+        embed = job_embed(jobs[i], companies[i], logos[i],
+                          job_link, level, location, tags[i])
+
+        await plugin.app.rest.create_message(plugin.app.d.config.HYM.STAFF_CHANNEL, embed=embed)
 
 
 # @plugin.listener(hikari.StartingEvent)
 # async def on_starting(event: hikari.StartingEvent) -> None:
 #     plugin.app.d.scheduler = AsyncIOScheduler()
-#     plugin.app.d.scheduler.add_job(job_post, 'interval', seconds=5)
+#     plugin.app.d.scheduler.add_job(job_post, 'interval', seconds=10)
 #     # plugin.app.d.scheduler.add_job(job_post, 'cron', day_of_week='mon')
+#     # plugin.app.d.scheduler.add_job(job_post, 'cron', hour=9, minute=0)
 
 
 # @plugin.listener(hikari.StartedEvent)
