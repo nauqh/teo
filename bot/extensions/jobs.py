@@ -1,3 +1,19 @@
+"""
+Module for scraping job postings from different resources and posting them to specific channels.
+
+Functions:
+    job_post(url: str, channel: str)
+        Scrapes job postings from topdev.vn and posts them to the specified job channel.
+    
+    job_post_itviec(url: str, channel: str)
+        Scrapes job postings from itviec.com and posts them to the specified job channel.
+
+Usage:
+    - On bot starting, init APScheduler and add task to post job to specific channels.
+    - Jobs are schedule to post at 9:00 AM on Monday and Thursday.
+    - Job postings are scraped from topdev.vn and itviec.com.
+"""
+
 import lightbulb
 import hikari
 import requests
