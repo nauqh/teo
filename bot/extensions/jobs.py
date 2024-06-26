@@ -1,7 +1,4 @@
 import lightbulb
-from hikari import Embed
-from datetime import datetime
-import pytz
 import hikari
 import requests
 from urllib.request import urlopen, Request
