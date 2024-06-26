@@ -91,7 +91,7 @@ async def get_info(ctx: lightbulb.Context):
             title=f"🧋 A greeting from T.è.o",
             colour="#118ab2",
             url="https://teodocs.vercel.app/",
-            description=f"Hello, I'm T.è.o, a virtual assistant for Coderschool TA. I'm here to help you with your learning journey.\n\n Everyweek on Monday and Thursday, I will send you an update on new job posting for your curren desired position. You can find it on the <#{job_board}> channel. \n\nIf you have any questions, feel free to ask my fellow <@&{ta}> via <#{questions}>. They will be here to help you.",
+            description=f"Hello, I'm T.è.o, a virtual assistant for Coderschool TA. I'm here to help you with your learning journey.\n\n Every week on Monday and Thursday, I will send you an update on new job posting for your desired position. You can find it on the <#{job_board}> channel. \n\nIf you have any questions, feel free to ask my fellow <@&{ta}> via <#{questions}>. They will be here to help you.",
             timestamp=datetime.now().astimezone(pytz.timezone('Asia/Ho_Chi_Minh'))
         )
         .set_thumbnail(bot.avatar_url)
