@@ -83,13 +83,16 @@ async def job_post_itviec(url, channel):
 
 @plugin.listener(hikari.StartingEvent)
 async def on_starting(event: hikari.StartingEvent) -> None:
-    # Schedule job_post to run every 30 seconds
     plugin.app.d.scheduler = AsyncIOScheduler(timezone='Asia/Ho_Chi_Minh')
     plugin.app.d.scheduler.start()
+
+    # Post jobs on Data server
     plugin.app.d.scheduler.add_job(job_post, 'cron', hour=9, minute=0, args=[
                                    "https://topdev.vn/viec-lam-it/data-analytics-intern-fresher-junior-kt202", 1255062099118395454])
     plugin.app.d.scheduler.add_job(job_post_itviec, 'cron', hour=9, minute=1, args=[
                                    "https://itviec.com/it-jobs/data-analyst", 1255062099118395454])
+
+    # Post jobs on FSW server
     plugin.app.d.scheduler.add_job(job_post, 'cron', hour=9, minute=2, args=[
         "https://topdev.vn/viec-lam-it/react-javascript-kt7367,22", 1255068486573625394])
     plugin.app.d.scheduler.add_job(job_post_itviec, 'cron', hour=9, minute=3, args=[
