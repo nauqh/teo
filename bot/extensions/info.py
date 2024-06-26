@@ -81,15 +81,17 @@ async def get_info(ctx: lightbulb.Context):
     if ctx.guild_id == 957854915194126336:
         ta = 1194665960376901773
         job_board = 1255062099118395454
+        questions = 1081063200377806899
     elif ctx.guild_id == 912307061310783538:
         ta = 912553106124972083
         job_board = 1255068486573625394
+        questions = 1077118780523679787
     embed = (
         Embed(
             title=f"🧋 A greeting from T.è.o",
             colour="#118ab2",
             url="https://teodocs.vercel.app/",
-            description=f"Hello, I'm T.è.o, a virtual assistant for Coderschool TA. I'm here to help you with your learning journey.\n\n Everyweek on Monday and Thursday, I will send you an update on new job posting for your curren desired position. You can find it on the <#{job_board}> channel. \n\nIf you have any questions, feel free to ask my fellow <@&{ta}>. They will be here to help you.",
+            description=f"Hello, I'm T.è.o, a virtual assistant for Coderschool TA. I'm here to help you with your learning journey.\n\n Everyweek on Monday and Thursday, I will send you an update on new job posting for your curren desired position. You can find it on the <#{job_board}> channel. \n\nIf you have any questions, feel free to ask my fellow <@&{ta}> via <#{questions}>. They will be here to help you.",
             timestamp=datetime.now().astimezone(pytz.timezone('Asia/Ho_Chi_Minh'))
         )
         .set_thumbnail(bot.avatar_url)
