@@ -41,7 +41,7 @@ async def job_post(url, channel) -> None:
     jobs = section.find_all('h3', class_='line-clamp-1')
     companies = [company.find('a').text.strip()
                  for company in section.find_all('div', class_='mt-1 line-clamp-1')]
-    for i in range(len(jobs[:5])):
+    for i in range(len(jobs)):
         job_link = jobs[i].find('a')['href']
         level = descriptions[i].find_all('p')[0]
         location = descriptions[i].find_all('p')[1]
@@ -60,7 +60,7 @@ async def job_post_itviec(url, channel):
 
     jobs = soup.find_all('div', class_='ipy-2')
 
-    for job in jobs[:5]:
+    for job in jobs:
         job_url = "https://itviec.com/" + job.find('a')['href']
         title = job.find('h3').text.strip()
         company = job.find(
