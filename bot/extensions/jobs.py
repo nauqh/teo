@@ -8,7 +8,7 @@ from urllib.request import urlopen, Request
 from bs4 import BeautifulSoup
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from bot.utils.embed import job_embed
+from bot.utils.embed import job_embed, job_embed_itviec
 
 plugin = lightbulb.Plugin("Jobs", "📝 Job postings")
 
@@ -75,34 +75,8 @@ async def job_post_itviec(url, channel):
         tags = ' '.join([f'`{a.text.strip()}`' for a in job.find(
             'div', class_='imt-3 imb-2').find_all('a')])
 
-        embed = (
-            Embed(
-                title=title,
-                description=f"**Company**: {company}",
-                colour="#118ab2",
-                url=job_url,
-                timestamp=datetime.now().astimezone(pytz.timezone('Asia/Ho_Chi_Minh'))
-            )
-            .set_thumbnail(logo)
-            .add_field(
-                "**Work mode**",
-                mode,
-                inline=True
-            )
-            .add_field(
-                "**Location**",
-                location,
-                inline=True
-            )
-            .add_field(
-                "**Tags**",
-                tags
-            )
-            .set_footer(
-                text=f"From TopDev",
-                icon="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIVD7VoNMi4DusIIN0zdRpTU4yueP5fD2Ysg&s"
-            )
-        )
+        embed = job_embed_itviec(
+            title, company, job_url, logo, mode, location, tags)
 
         await plugin.app.rest.create_message(channel, embed=embed)
 

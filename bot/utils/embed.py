@@ -67,7 +67,38 @@ def job_embed(job, company, logo, url, level, location, tag):
             f"{tag}"
         )
         .set_footer(
-            text=f"From ITviec ",
+            text=f"From TopDev",
+            icon="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIVD7VoNMi4DusIIN0zdRpTU4yueP5fD2Ysg&s"
+        )
+    )
+
+
+def job_embed_itviec(title, company, url, logo, mode, location, tags):
+    return (
+        Embed(
+            title=title,
+            description=f"**Company**: {company}",
+            colour="#118ab2",
+            url=url,
+            timestamp=datetime.now().astimezone(pytz.timezone('Asia/Ho_Chi_Minh'))
+        )
+        .set_thumbnail(logo)
+        .add_field(
+            "**Work mode**",
+            mode,
+            inline=True
+        )
+        .add_field(
+            "**Location**",
+            location,
+            inline=True
+        )
+        .add_field(
+            "**Tags**",
+            tags
+        )
+        .set_footer(
+            text=f"From ITviec",
             icon="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKk8Nc-lBHyDwEMs0drgzArhbsx4Ihq-_DIA&s"
         )
     )
