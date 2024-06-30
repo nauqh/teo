@@ -105,7 +105,7 @@ async def on_starting(event: hikari.StartingEvent) -> None:
     plugin.app.d.scheduler.add_job(job_post, 'cron', day_of_week='mon,thu', hour=9, minute=0, args=[
                                    "https://topdev.vn/viec-lam-it/data-analytics-intern-fresher-junior-kt202", 1255062099118395454])
     plugin.app.d.scheduler.add_job(job_post_itviec, 'cron', day_of_week='mon,thu', hour=9, minute=1, args=[
-                                   "https://itviec.com/it-jobs/data-analyst", 1255062099118395454])
+                                   "https://itviec.com/it-jobs/data-analyst-python-sql?search_by_skill=true", 1255062099118395454])
 
     # Post jobs on FSW server
     plugin.app.d.scheduler.add_job(job_post, 'cron', day_of_week='mon,thu', hour=9, minute=2, args=[
