@@ -76,6 +76,8 @@ async def job_post_itviec(url, channel):
     for job in jobs:
         job_url = "https://itviec.com/" + job.find('a')['href']
         title = job.find('h3').text.strip()
+        if any(keyword in title.lower() for keyword in ['senior', 'manager', 'leader', 'Sr.']):
+            continue
         company = job.find(
             'div', class_='imy-3 d-flex align-items-center').span.text.strip()
         logo = job.find(
