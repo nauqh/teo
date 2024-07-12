@@ -38,9 +38,9 @@ def get_subfolder_names(path=None):
 
 
 async def post_jobs():
-    for path in get_subfolder_names('scripts/data/filter'):
+    for path in get_subfolder_names('scripts/data/filter/'):
         channel = 1255062099118395454 if 'data' in path else 1255068486573625394
-        with open(os.path.join('scripts/data/filter', path), 'r', encoding='utf-8') as file:
+        with open(os.path.join('scripts/data/filter/', path), 'r', encoding='utf-8') as file:
             data = json.load(file)
             for item in data:
                 embed = (
@@ -68,6 +68,6 @@ async def on_starting(event: hikari.StartingEvent) -> None:
     plugin.app.d.scheduler.start()
 
     plugin.app.d.scheduler.add_job(
-        run_script, 'cron', day_of_week='fri', hour=14)
+        run_script, 'cron', day_of_week='fri', hour=14, minute=25)
     plugin.app.d.scheduler.add_job(
-        post_jobs, 'cron', day_of_week='fri', hour=15)
+        post_jobs, 'cron', day_of_week='fri', hour=14, minute=30)
