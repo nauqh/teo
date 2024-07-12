@@ -84,5 +84,3 @@ async def on_starting(event: hikari.StartingEvent) -> None:
         run_script, 'cron', day_of_week='mon', hour=8)
     plugin.app.d.scheduler.add_job(
         post_jobs, 'cron', day_of_week='mon', hour=9)
-    plugin.app.d.scheduler.add_job(
-        post_jobs, 'interval', seconds=20)
