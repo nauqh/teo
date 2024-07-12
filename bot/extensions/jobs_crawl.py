@@ -42,6 +42,16 @@ async def post_jobs():
         channel = 1255062099118395454 if 'data' in path else 1255068486573625394
         with open(os.path.join('scripts/data/filter/', path), 'r', encoding='utf-8') as file:
             data = json.load(file)
+            if 'itviec' in path:
+                icon_url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKk8Nc-lBHyDwEMs0drgzArhbsx4Ihq-_DIA&s"
+                icon_title = "ITviec"
+            elif 'linkedin' in path:
+                icon_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/600px-LinkedIn_logo_initials.png"
+                icon_title = "LinkedIn"
+            else:
+                icon_url = "https://play-lh.googleusercontent.com/SsaNLtRaJR44BSM1tX1jOax7rvfG4UgxqonLxui7nXQBh1Osa4EsZMUHZVXKZINo4A"
+                icon_title = "TopCV"
+
             for item in data:
                 embed = (
                     Embed(
@@ -52,11 +62,14 @@ async def post_jobs():
                         timestamp=datetime.now().astimezone(pytz.timezone('Asia/Ho_Chi_Minh'))
                     )
                     .set_thumbnail(item['logo'])
-
                     .add_field(
                         "**Location**",
                         item['location'],
                         inline=True
+                    )
+                    .set_footer(
+                        text=f"From {icon_title}",
+                        icon=icon_url
                     )
                 )
                 await plugin.app.rest.create_message(channel, embed=embed)
@@ -71,3 +84,5 @@ async def on_starting(event: hikari.StartingEvent) -> None:
         run_script, 'cron', day_of_week='mon', hour=8)
     plugin.app.d.scheduler.add_job(
         post_jobs, 'cron', day_of_week='mon', hour=9)
+    plugin.app.d.scheduler.add_job(
+        post_jobs, 'interval', seconds=20)
