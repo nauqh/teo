@@ -61,7 +61,7 @@ class JobMatchingAssistant:
     def process_jobs(self, jobs_file, output_file):
         with open(jobs_file, 'r', encoding='utf-8') as file:
             data = json.load(file)
-        with open('data/profile.json', 'r') as file:
+        with open('profile.json', 'r') as file:
             candidate = json.load(file)
 
         for job in data:
