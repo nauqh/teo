@@ -9,7 +9,7 @@ import json
 def run_script():
     try:
         os.chdir('scripts')
-        subprocess.run(['sh', 'script.sh'],
+        subprocess.run(['bash', 'script.sh'],
                        check=True)
         print("Script completed successfully.")
     except subprocess.CalledProcessError as e:

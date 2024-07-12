@@ -27,7 +27,8 @@ plugin = lightbulb.Plugin("Jobs", "📝 Job postings")
 
 
 def load(bot: lightbulb.BotApp) -> None:
-    bot.add_plugin(plugin)
+    # bot.add_plugin(plugin)
+    ...
 
 
 async def job_post(url, channel) -> None:
