@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from urllib.request import urlopen, Request
+import requests
 
 
 def extract_nested_data(soup, find_description=True):
@@ -33,8 +33,8 @@ def scrape_jobs_topcv(url):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
 
-    page = urlopen(Request(url, headers=headers))
-    soup = BeautifulSoup(page, "html.parser")
+    page = requests.get(url, headers=headers)
+    soup = BeautifulSoup(page.content, "html.parser")
 
     jobs = soup.find_all('div', class_='job-item-search-result')
 
@@ -51,8 +51,8 @@ def scrape_jobs_topcv(url):
         salary = job.find('label', class_='title-salary').text.strip()
         status = job.find('label', class_='address mobile-hidden').text.strip()
 
-        page = urlopen(Request(job_url, headers=headers))
-        soup = BeautifulSoup(page, "html.parser")
+        page = requests.get(job_url, headers=headers)
+        soup = BeautifulSoup(page.content, "html.parser")
         descriptions = extract_nested_data(soup)
         requirements = extract_nested_data(soup, find_description=False)
 
