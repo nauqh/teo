@@ -1,13 +1,13 @@
 from bs4 import BeautifulSoup
-from urllib.request import urlopen, Request
+import requests
 
 
 def scrape_jobs(url):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
-    page = urlopen(Request(url, headers=headers))
-    soup = BeautifulSoup(page, "html.parser")
+    page = requests.get(url, headers=headers)
+    soup = BeautifulSoup(page.content, "html.parser")
     jobs = soup.find_all('div', class_='ipy-2')
 
     job_data = []
@@ -30,8 +30,8 @@ def scrape_jobs(url):
         tags = ' '.join([f'`{a.text.strip()}`' for a in job.find(
             'div', class_='imt-3 imb-2').find_all('a')])
 
-        page = urlopen(Request(job_url, headers=headers))
-        soup = BeautifulSoup(page, "html.parser")
+        page = requests.get(job_url, headers=headers)
+        soup = BeautifulSoup(page.content, "html.parser")
         job_description = soup.find_all('div', class_='imy-5 paragraph')[0]
         job_requirement = soup.find_all('div', class_='imy-5 paragraph')[1]
 
