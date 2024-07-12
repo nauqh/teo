@@ -8,3 +8,4 @@ beautifulsoup4
 bs4
 langchain
 langchain-openai
+urllib3<2
