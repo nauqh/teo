@@ -75,7 +75,7 @@ async def post_jobs():
                 await plugin.app.rest.create_message(channel, embed=embed)
 
 
-@ plugin.listener(hikari.StartingEvent)
+@plugin.listener(hikari.StartingEvent)
 async def on_starting(event: hikari.StartingEvent) -> None:
     plugin.app.d.scheduler = AsyncIOScheduler(timezone='Asia/Ho_Chi_Minh')
     plugin.app.d.scheduler.start()
