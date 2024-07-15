@@ -80,9 +80,7 @@ async def on_starting(event: hikari.StartingEvent) -> None:
     plugin.app.d.scheduler = AsyncIOScheduler(timezone='Asia/Ho_Chi_Minh')
     plugin.app.d.scheduler.start()
 
-    # plugin.app.d.scheduler.add_job(
-    #     run_script, 'cron', day_of_week='mon', hour=8)
-    # plugin.app.d.scheduler.add_job(
-    #     post_jobs, 'cron', day_of_week='mon', hour=9)
     plugin.app.d.scheduler.add_job(
-        post_jobs, 'interval', minutes=2)
+        run_script, 'cron', day_of_week='mon', hour=8)
+    plugin.app.d.scheduler.add_job(
+        post_jobs, 'cron', day_of_week='mon', hour=9)
