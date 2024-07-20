@@ -16,11 +16,15 @@ if __name__ == "__main__":
     BASE = 'data/filter'
     subfolders = get_subfolder_names(BASE)
 
-    for path in get_subfolder_names('data/filter/'):
+    for path in get_subfolder_names('data/processed/'):
         tag = 'data' if 'data' in path else 'fsw'
-        with open(os.path.join('data/filter/', path), 'r', encoding='utf-8') as file:
+        with open(os.path.join('data/processed/', path), 'r', encoding='utf-8') as file:
             data = json.load(file)
             for item in data:
                 item['tag'] = tag
-            response = requests.post(URL + "/jobs", json=data)
+                headers = {
+                    'password': 'jobboard',
+                    'Content-Type': 'application/json'
+                }
+            response = requests.post(URL + "/jobs", json=data, headers=headers)
             print(response.text)
