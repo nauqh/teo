@@ -13,8 +13,6 @@ def get_subfolder_names(path=None):
 if __name__ == "__main__":
     # NOTE: Upload jobs
     URL = "https://jobboard.up.railway.app"
-    BASE = 'data/filter'
-    subfolders = get_subfolder_names(BASE)
 
     for path in get_subfolder_names('data/processed/'):
         tag = 'data' if 'data' in path else 'fsw'
