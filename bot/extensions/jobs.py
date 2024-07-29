@@ -17,9 +17,6 @@ def load(bot: lightbulb.BotApp) -> None:
     bot.add_plugin(plugin)
 
 
-# NOTE: CWD is /scripts
-
-
 def run_script():
     try:
         os.chdir('scripts')
