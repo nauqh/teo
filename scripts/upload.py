@@ -20,9 +20,9 @@ if __name__ == "__main__":
             data = json.load(file)
             for item in data:
                 item['tag'] = tag
-                headers = {
-                    'password': 'jobboard',
-                    'Content-Type': 'application/json'
-                }
+            headers = {
+                'password': 'jobboard',
+                'Content-Type': 'application/json'
+            }
             response = requests.post(URL + "/jobs", json=data, headers=headers)
             print(response.text)

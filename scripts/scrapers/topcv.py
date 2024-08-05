@@ -49,7 +49,6 @@ def scrape_jobs_topcv(url):
         job_url = job.find('a')['href']
         location = job.find('label', class_='address').text.strip()
         salary = job.find('label', class_='title-salary').text.strip()
-        status = job.find('label', class_='address mobile-hidden').text.strip()
 
         page = requests.get(job_url, headers=headers)
         soup = BeautifulSoup(page.content, "html.parser")
@@ -63,7 +62,6 @@ def scrape_jobs_topcv(url):
             'url': job_url,
             'location': location,
             'salary': salary,
-            'status': status,
             'descriptions': descriptions,
             'requirements': requirements
         })
