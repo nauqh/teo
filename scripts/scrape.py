@@ -24,10 +24,11 @@ print("Scraped jobs from ITViec")
 # NOTE: TopCV
 topcv_jobs_data = scrape_jobs_topcv(
     "https://www.topcv.vn/tim-viec-lam-data-analyst?exp=2")
+
 topcv_jobs_fsw = scrape_jobs_topcv(
-    "https://www.topcv.vn/tim-viec-lam-reactjs?exp=2")
+    "https://www.topcv.vn/tim-viec-lam-frontend-developer?exp=2")
 save_jobs_to_json(topcv_jobs_data, BASE + "DS/topcv_jobs_data.json")
-save_jobs_to_json(topcv_jobs_fsw, BASE + "FSW/topcv_jobs_fsw.json")
+save_jobs_to_json(topcv_jobs_fsw, BASE + "FSW/topcv_jobs_fsw2.json")
 print("Scraped jobs from TopCV")
 
 # NOTE: LinkedIn

@@ -2,31 +2,26 @@ from bs4 import BeautifulSoup
 import requests
 
 
-def extract_nested_data(soup, find_description=True):
-    i, j = (0, 1) if find_description else (1, 2)
-    descriptions = []
+def find_description(soup):
     try:
-        content = soup.find_all('div', class_='job-description__item')[i]
-        if content:
-            # Extract text from paragraphs
-            paragraphs = content.find_all('p')
-            for para in paragraphs:
-                descriptions.append(para.text.strip())
+        description = soup.find('div', class_='job-description__item')
+        if not description:
+            description = soup.find_all('div', class_='box-info')[1]
+    except Exception as e:
+        print(e)
+    return description.text
 
-            # Extract text from list items
-            list_items = content.find_all('li')
-            for item in list_items:
-                descriptions.append(item.text.strip())
-    except Exception:
-        box_info = soup.find_all('div', class_='box-info')[j]
-        if box_info:
-            title = box_info.find('h2', class_='title').text.strip()
-            content = box_info.find('div', class_='content-tab')
-            if content:
-                paragraphs = content.find_all('p')
-                for para in paragraphs:
-                    descriptions.append((title, para.text.strip()))
-    return descriptions
+
+def find_requirement(soup):
+    try:
+        requirement = soup.find_all('div', class_='job-description__item')
+        if requirement:
+            requirement = requirement[1]
+        else:
+            requirement = soup.find_all('div', class_='box-info')[2]
+    except Exception as e:
+        print(e)
+    return requirement.text
 
 
 def scrape_jobs_topcv(url):
@@ -49,11 +44,16 @@ def scrape_jobs_topcv(url):
         job_url = job.find('a')['href']
         location = job.find('label', class_='address').text.strip()
         salary = job.find('label', class_='title-salary').text.strip()
+        status = job.find('label', class_='address mobile-hidden').text.strip()
 
         page = requests.get(job_url, headers=headers)
         soup = BeautifulSoup(page.content, "html.parser")
-        descriptions = extract_nested_data(soup)
-        requirements = extract_nested_data(soup, find_description=False)
+
+        try:
+            descriptions = find_description(soup)
+            requirements = find_requirement(soup)
+        except Exception as e:
+            print(f"Exception for job {title}: {e}")
 
         job_data.append({
             'title': title,
@@ -62,6 +62,7 @@ def scrape_jobs_topcv(url):
             'url': job_url,
             'location': location,
             'salary': salary,
+            'status': status,
             'descriptions': descriptions,
             'requirements': requirements
         })
