@@ -1,5 +1,3 @@
-import subprocess
-import os
 import lightbulb
 import hikari
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -35,7 +33,8 @@ async def post_jobs():
             icon_title = "TopCV"
 
         channel = 1255062099118395454 if job['tag'] == 'data' else 1255068486573625394
-
+        if 'vn.' in job['url']:
+            job['url'] = job['url'].replace('vn.', 'www.')
         embed = (
             Embed(
                 title=job['title'],
