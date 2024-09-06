@@ -17,23 +17,6 @@ def load(bot: lightbulb.BotApp) -> None:
     bot.add_plugin(plugin)
 
 
-def run_script():
-    try:
-        os.chdir('scripts')
-        subprocess.run(['sh', 'script.sh'],
-                       check=True)
-        print("Script completed successfully.")
-    except subprocess.CalledProcessError as e:
-        print("Script failed with error:", e)
-
-
-def get_subfolder_names(path=None):
-    if path is None:
-        path = os.getcwd()
-
-    return os.listdir(path)
-
-
 async def post_jobs():
     response = requests.get(
         "https://jobboard.up.railway.app/jobs?filtered=True")
@@ -80,7 +63,5 @@ async def on_starting(event: hikari.StartingEvent) -> None:
     plugin.app.d.scheduler = AsyncIOScheduler(timezone='Asia/Ho_Chi_Minh')
     plugin.app.d.scheduler.start()
 
-    plugin.app.d.scheduler.add_job(
-        run_script, 'cron', day_of_week='mon', hour=8)
     plugin.app.d.scheduler.add_job(
         post_jobs, 'cron', day_of_week='mon', hour=9)
