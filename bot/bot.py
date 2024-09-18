@@ -31,7 +31,7 @@ async def check_threads(
     forum_channel: int,
     staff_channel: int
 ):
-    CHECK_INTERVAL = 10
+    CHECK_INTERVAL = 2000
     while True:
         await asyncio.sleep(CHECK_INTERVAL)
         threads = [
@@ -113,7 +113,7 @@ async def on_started(event: hikari.StartedEvent) -> None:
     app.d.config = cf
     # Check question center
     asyncio.create_task(check_threads(
-        cf.DATA.GUILD, cf.DATA.FORUM_CHANNEL, 1285856997467619400))
+        cf.DATA.GUILD, cf.DATA.FORUM_CHANNEL, cf.DATA.STAFF_CHANNEL))
     asyncio.create_task(check_threads(
         cf.FSW.GUILD, cf.FSW.FORUM_CHANNEL, cf.FSW.STAFF_CHANNEL))
 
