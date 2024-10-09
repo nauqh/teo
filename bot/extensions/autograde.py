@@ -33,7 +33,6 @@ exams = {
 async def resource(ctx: lightbulb.Context):
     email = ctx.options['email']
     exam = ctx.options['exam']
-    url = f"http://127.0.0.1:8000/test?email={email}&exam={exams[exam]}"
-
+    url = f"https://cspyexamclient.up.railway.app/autograde?email={email}&exam={exams[exam]}"
     response = requests.get(url).json()
     await ctx.respond(f"```{response}```")
