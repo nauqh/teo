@@ -38,9 +38,10 @@ async def resource(ctx: lightbulb.Context):
     response = requests.get(url)
 
     if response.status_code != 200:
-        await ctx.respond(f"Error: {response.json()['detail']}")
+        await ctx.respond(response.json()['detail'])
 
     else:
+        await ctx.respond("Created thread!")
         response = response.json()
         submission_response = (
             f"LEARNER SUBMISSION - {email}\n" +
