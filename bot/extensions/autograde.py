@@ -1,6 +1,6 @@
 import lightbulb
 import hikari
-from bot.utils.checks import valid_learner
+from bot.utils.checks import is_TA
 
 from hikari import Embed
 from datetime import datetime
@@ -23,6 +23,7 @@ exams = {
 
 
 @plugin.command()
+@lightbulb.add_checks(lightbulb.guild_only, is_TA)
 @lightbulb.option('email', 'Learner email', required=True)
 @lightbulb.option('exam', 'Module number', choices=['M1.1: Basic SQL',
                                                     'M1.2: Advanced SQL',
