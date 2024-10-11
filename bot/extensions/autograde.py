@@ -29,11 +29,13 @@ exams = {
                                                     'M1.2: Advanced SQL',
                                                     'M2.1: Python 101',
                                                     'M3.1: Pandas 101'], required=True)
+@lightbulb.option('view_submission', 'View learner submission', choices=['True', 'False'], default=False)
 @lightbulb.command('autograde', 'Autograde module', auto_defer=True)
 @lightbulb.implements(lightbulb.SlashCommand)
 async def resource(ctx: lightbulb.Context):
     email = ctx.options['email']
     exam = ctx.options['exam']
+    view_submission = ctx.options['view_submission']
     url = f"https://cspyexamclient.up.railway.app/autograde?email={email}&exam={exams[exam]}"
     response = requests.get(url)
 
@@ -41,21 +43,24 @@ async def resource(ctx: lightbulb.Context):
         await ctx.respond(response.json()['detail'])
 
     else:
-        await ctx.respond("Created thread!")
         response = response.json()
-        submission_response = (
-            f"LEARNER SUBMISSION - {email}\n" +
-            '\n'.join(f"{i+1}: {ans}" for i,
-                      ans in enumerate(response['submission']))
-        )
+        if view_submission:
+            await ctx.respond("Created thread!")
+            submission_response = (
+                f"LEARNER SUBMISSION - {email}\n" +
+                '\n'.join(f"{i+1}: {ans}" for i,
+                          ans in enumerate(response['submission']))
+            )
 
-        thread = await ctx.app.rest.create_thread(
-            ctx.get_channel(),
-            hikari.ChannelType.GUILD_PUBLIC_THREAD,
-            exam
-        )
+            thread = await ctx.app.rest.create_thread(
+                ctx.get_channel(),
+                hikari.ChannelType.GUILD_PUBLIC_THREAD,
+                exam
+            )
 
-        exam_type = 'sql' if exam.startswith('M1') else 'python'
+            exam_type = 'sql' if exam.startswith('M1') else 'python'
 
-        await thread.send(f"```{exam_type}\n{submission_response}\n```")
-        await thread.send(f"```{response['summary']}```")
+            await thread.send(f"```{exam_type}\n{submission_response}\n```")
+            await thread.send(f"```{response['summary']}```")
+        else:
+            await ctx.respond(f"```{response['summary']}```")
