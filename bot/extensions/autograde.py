@@ -35,21 +35,24 @@ async def resource(ctx: lightbulb.Context):
     email = ctx.options['email']
     exam = ctx.options['exam']
     url = f"https://cspyexamclient.up.railway.app/autograde?email={email}&exam={exams[exam]}"
-    response = requests.get(url).json()
+    response = requests.get(url)
 
-    submission_response = (
-        f"LEARNER SUBMISSION - {email}\n" +
-        '\n'.join(f"{i+1}: {ans}" for i,
-                  ans in enumerate(response['submission']))
-    )
+    if response.status_code != 200:
+        await ctx.respond(f"Error: {response.json()['detail']}")
 
-    thread = await ctx.app.rest.create_thread(
-        ctx.get_channel(),
-        hikari.ChannelType.GUILD_PUBLIC_THREAD,
-        exam
-    )
+    else:
+        response = response.json()
+        submission_response = (
+            f"LEARNER SUBMISSION - {email}\n" +
+            '\n'.join(f"{i+1}: {ans}" for i,
+                      ans in enumerate(response['submission']))
+        )
 
-    await thread.send(f"```\n{submission_response}\n```")
-    await thread.send(f"```{response['summary']}```")
+        thread = await ctx.app.rest.create_thread(
+            ctx.get_channel(),
+            hikari.ChannelType.GUILD_PUBLIC_THREAD,
+            exam
+        )
 
-    ctx.get_channel()
+        await thread.send(f"```\n{submission_response}\n```")
+        await thread.send(f"```{response['summary']}```")
