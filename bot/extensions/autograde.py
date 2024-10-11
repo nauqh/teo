@@ -36,4 +36,12 @@ async def resource(ctx: lightbulb.Context):
     exam = ctx.options['exam']
     url = f"https://cspyexamclient.up.railway.app/autograde?email={email}&exam={exams[exam]}"
     response = requests.get(url).json()
-    await ctx.respond(f"```{response}```")
+
+    submission_response = (
+        "LEARNER SUBMISSION\n" +
+        '\n'.join(f"{i+1}: {ans}" for i,
+                  ans in enumerate(response['submission']))
+    )
+
+    await ctx.respond(f"```\n{submission_response}\n```")
+    await ctx.respond(f"```{response['summary']}```")
