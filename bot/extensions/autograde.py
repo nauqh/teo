@@ -55,5 +55,7 @@ async def resource(ctx: lightbulb.Context):
             exam
         )
 
-        await thread.send(f"```\n{submission_response}\n```")
+        exam_type = 'sql' if exam.startswith('M1') else 'python'
+
+        await thread.send(f"```{exam_type}\n{submission_response}\n```")
         await thread.send(f"```{response['summary']}```")
