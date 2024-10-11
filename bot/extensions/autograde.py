@@ -29,7 +29,7 @@ exams = {
                                                     'M1.2: Advanced SQL',
                                                     'M2.1: Python 101',
                                                     'M3.1: Pandas 101'], required=True)
-@lightbulb.command('autograde2', 'Autograde module', auto_defer=True)
+@lightbulb.command('autograde', 'Autograde module', auto_defer=True)
 @lightbulb.implements(lightbulb.SlashCommand)
 async def resource(ctx: lightbulb.Context):
     email = ctx.options['email']
