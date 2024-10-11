@@ -44,9 +44,9 @@ async def resource(ctx: lightbulb.Context):
     )
 
     thread = await ctx.app.rest.create_thread(
-        channel=ctx.get_channel(),
-        type=hikari.ChannelType.GUILD_PUBLIC_THREAD,
-        name=exam
+        ctx.get_channel(),
+        hikari.ChannelType.GUILD_PUBLIC_THREAD,
+        exam
     )
 
     await thread.send(f"```\n{submission_response}\n```")
