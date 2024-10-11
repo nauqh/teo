@@ -29,7 +29,7 @@ exams = {
                                                     'M1.2: Advanced SQL',
                                                     'M2.1: Python 101',
                                                     'M3.1: Pandas 101'], required=True)
-@lightbulb.command('autograde', 'Autograde module', auto_defer=True)
+@lightbulb.command('autograde2', 'Autograde module', auto_defer=True)
 @lightbulb.implements(lightbulb.SlashCommand)
 async def resource(ctx: lightbulb.Context):
     email = ctx.options['email']
@@ -38,10 +38,18 @@ async def resource(ctx: lightbulb.Context):
     response = requests.get(url).json()
 
     submission_response = (
-        "LEARNER SUBMISSION\n" +
+        f"LEARNER SUBMISSION - {email}\n" +
         '\n'.join(f"{i+1}: {ans}" for i,
                   ans in enumerate(response['submission']))
     )
 
-    await ctx.respond(f"```\n{submission_response}\n```")
-    await ctx.respond(f"```{response['summary']}```")
+    thread = await ctx.app.rest.create_thread(
+        channel=ctx.get_channel(),
+        type=hikari.ChannelType.GUILD_PUBLIC_THREAD,
+        name=exam
+    )
+
+    await thread.send(f"```\n{submission_response}\n```")
+    await thread.send(f"```{response['summary']}```")
+
+    ctx.get_channel()
