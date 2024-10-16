@@ -57,7 +57,9 @@ async def resource(ctx: lightbulb.Context):
 
         exam_type = 'sql' if exam.startswith('M1') else 'python'
 
-        await thread.send(f"```{exam_type}\n{submission_response}\n```")
+        # Handle excessive submission
+        await thread.send(f"```{exam_type}\n{submission_response[:submission_response.find('13:')]}\n```")
+        await thread.send(f"```{exam_type}\n{submission_response[submission_response.find('13:'):]}\n```")
         await thread.send(f"```{response['summary']}```")
 
         with open(f'assets/solutions/{exam}.pdf', 'rb') as f:
