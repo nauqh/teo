@@ -29,7 +29,7 @@ exams = {
                                                     'M1.2 Advanced SQL',
                                                     'M2.1 Python 101',
                                                     'M3.1 Pandas 101'], required=True)
-@lightbulb.command('get_submission', 'Autograde module', auto_defer=True, ephemeral=True)
+@lightbulb.command('submission', 'Get learner submission', auto_defer=True, ephemeral=True)
 @lightbulb.implements(lightbulb.SlashCommand)
 async def resource(ctx: lightbulb.Context):
     email = ctx.options['email']
@@ -52,7 +52,7 @@ async def resource(ctx: lightbulb.Context):
         thread = await ctx.app.rest.create_thread(
             ctx.get_channel(),
             hikari.ChannelType.GUILD_PUBLIC_THREAD,
-            exam
+            f"{email} - {exam}"
         )
 
         exam_type = 'sql' if exam.startswith('M1') else 'python'
@@ -64,3 +64,26 @@ async def resource(ctx: lightbulb.Context):
 
         with open(f'assets/solutions/{exam}.pdf', 'rb') as f:
             await thread.send(hikari.Bytes(f, 'solutions.pdf'))
+
+
+@plugin.command()
+@lightbulb.add_checks(lightbulb.guild_only, is_TA)
+@lightbulb.option('score', 'New score', required=True)
+@lightbulb.option('email', 'Learner email', required=True)
+@lightbulb.option('exam', 'Module number', choices=['M1.1 Basic SQL',
+                                                    'M1.2 Advanced SQL',
+                                                    'M2.1 Python 101',
+                                                    'M3.1 Pandas 101'], required=True)
+@lightbulb.command('update', 'Update exam score', auto_defer=True, ephemeral=True)
+@lightbulb.implements(lightbulb.SlashCommand)
+async def resource(ctx: lightbulb.Context):
+    email = ctx.options['email']
+    exam = ctx.options['exam']
+    score = ctx.options['score']
+    url = f"https://cspyexamclient.up.railway.app/submissions/{exams[exam]}/{email}?new_score={score}"
+    response = requests.put(url)
+
+    if response.status_code != 200:
+        await ctx.respond(response.json()['detail'])
+    else:
+        await ctx.respond(f"Updated score for learner {email}. New score is {score}.")
