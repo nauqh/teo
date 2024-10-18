@@ -29,12 +29,12 @@ exams = {
                                                     'M1.2 Advanced SQL',
                                                     'M2.1 Python 101',
                                                     'M3.1 Pandas 101'], required=True)
-@lightbulb.command('autograde', 'Autograde module', auto_defer=True, ephemeral=True)
+@lightbulb.command('get_submission', 'Autograde module', auto_defer=True, ephemeral=True)
 @lightbulb.implements(lightbulb.SlashCommand)
 async def resource(ctx: lightbulb.Context):
     email = ctx.options['email']
     exam = ctx.options['exam']
-    url = f"https://cspyexamclient.up.railway.app/autograde?email={email}&exam={exams[exam]}"
+    url = f"https://cspyexamclient.up.railway.app/submissions/{exams[exam]}/{email}"
     response = requests.get(url)
 
     if response.status_code != 200:
@@ -46,7 +46,7 @@ async def resource(ctx: lightbulb.Context):
         submission_response = (
             f"LEARNER SUBMISSION - {email}\n" +
             '\n'.join(f"{i+1}: {ans}" for i,
-                      ans in enumerate(response['submission']))
+                      ans in enumerate([question['answer'] for question in response['answers']]))
         )
 
         thread = await ctx.app.rest.create_thread(
