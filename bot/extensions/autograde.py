@@ -123,8 +123,13 @@ async def view_history(ctx: lightbulb.Context):
             icon=author.avatar_url
         )
         for submission in response:
+            exam = submission['exam']
+            score = submission['score']
+            submitted_at = submission['submitted_at'].replace('T', ' ')
+            channel = "Use `/submission` to update channel link" if not submission[
+                'channel'] else submission['channel']
             embed.add_field(
-                name=f"{submission['exam']}",
-                value=f"**Score**: {submission['score']}\n **Submitted at**: {submission['submitted_at'].replace('T', ' ')}\n **Channel**: {submission['channel']}",
+                name=exam,
+                value=f"**Score**: {score}\n **Submitted at**: {submitted_at}\n **Channel**: {channel}",
             )
         await ctx.respond(embed=embed)
