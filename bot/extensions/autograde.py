@@ -56,6 +56,9 @@ async def view_submission(ctx: lightbulb.Context):
             f"{email} - {exam}"
         )
 
+        # TODO: Add this communication to database
+        # await ctx.respond(f"https://discord.com/channels/{thread.guild_id}/{thread.id}")
+
         exam_type = 'sql' if exam.startswith('M1') else 'python'
 
         # Handle excessive submission
@@ -75,7 +78,7 @@ async def view_submission(ctx: lightbulb.Context):
                                                     'M1.2 Advanced SQL',
                                                     'M2.1 Python 101',
                                                     'M3.1 Pandas 101'], required=True)
-@lightbulb.command('update', 'Update exam score', auto_defer=True, ephemeral=True)
+@lightbulb.command('update', 'Update exam score', auto_defer=True)
 @lightbulb.implements(lightbulb.SlashCommand)
 async def update_score(ctx: lightbulb.Context):
     email = ctx.options['email']
