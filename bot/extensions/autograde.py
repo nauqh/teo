@@ -56,8 +56,11 @@ async def view_submission(ctx: lightbulb.Context):
             f"{email} - {exam}"
         )
 
-        # TODO: Add this communication to database
-        # await ctx.respond(f"https://discord.com/channels/{thread.guild_id}/{thread.id}")
+        # Add this communication to database
+        if not response['channel']:
+            channel = f"https://discord.com/channels/{thread.guild_id}/{thread.id}"
+            url = f"https://cspyexamclient.up.railway.app/channels/{exams[exam]}/{email}?channel={channel}"
+            response = requests.put(url)
 
         exam_type = 'sql' if exam.startswith('M1') else 'python'
 
@@ -122,6 +125,6 @@ async def view_history(ctx: lightbulb.Context):
         for submission in response:
             embed.add_field(
                 name=f"**Exam**: {submission['exam']}",
-                value=f"**Score**: {submission['score']}\n **Submitted at**: {submission['submitted_at'].replace('T', ' ')}",
+                value=f"**Score**: {submission['score']}\n **Submitted at**: {submission['submitted_at'].replace('T', ' ')}\n **Channel**: {submission['channel']}",
             )
         await ctx.respond(embed=embed)
