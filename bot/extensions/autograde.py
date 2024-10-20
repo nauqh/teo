@@ -118,7 +118,7 @@ async def view_history(ctx: lightbulb.Context):
         )
         for submission in response:
             embed.add_field(
-                name=f"{submission['submitted_at'].replace('T', ' ')}",
-                value=f"**Exam**: {submission['exam']}\n **Score**: {submission['score']}",
+                name=f"**Exam**: {submission['exam']}",
+                value=f"**Score**: {submission['score']}\n **Submitted at**: {submission['submitted_at'].replace('T', ' ')}",
             )
         await ctx.respond(embed=embed)
