@@ -5,6 +5,7 @@ from bot.utils.checks import is_TA
 from hikari import Embed
 from datetime import datetime
 import requests
+import pytz
 
 
 plugin = lightbulb.Plugin("Autograde", "📝 Autograde exam submissions")
@@ -31,7 +32,7 @@ exams = {
                                                     'M3.1 Pandas 101'], required=True)
 @lightbulb.command('submission', 'Get learner submission', auto_defer=True, ephemeral=True)
 @lightbulb.implements(lightbulb.SlashCommand)
-async def resource(ctx: lightbulb.Context):
+async def view_submission(ctx: lightbulb.Context):
     email = ctx.options['email']
     exam = ctx.options['exam']
     url = f"https://cspyexamclient.up.railway.app/submissions/{exams[exam]}/{email}"
@@ -76,7 +77,7 @@ async def resource(ctx: lightbulb.Context):
                                                     'M3.1 Pandas 101'], required=True)
 @lightbulb.command('update', 'Update exam score', auto_defer=True, ephemeral=True)
 @lightbulb.implements(lightbulb.SlashCommand)
-async def resource(ctx: lightbulb.Context):
+async def update_score(ctx: lightbulb.Context):
     email = ctx.options['email']
     exam = ctx.options['exam']
     score = ctx.options['score']
@@ -87,3 +88,37 @@ async def resource(ctx: lightbulb.Context):
         await ctx.respond(response.json()['detail'])
     else:
         await ctx.respond(f"Updated score for learner {email}. New score is {score}.")
+
+
+@plugin.command()
+@lightbulb.add_checks(lightbulb.guild_only, is_TA)
+@lightbulb.option('email', 'Learner email', required=True)
+@lightbulb.command('history', 'View submission history of a learner', auto_defer=True)
+@lightbulb.implements(lightbulb.SlashCommand)
+async def view_history(ctx: lightbulb.Context):
+    email = ctx.options['email']
+    author = ctx.author
+
+    url = f"https://cspyexamclient.up.railway.app/history/{email}"
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        await ctx.respond(response.json()['detail'])
+    else:
+        response = response.json()
+        embed = hikari.Embed(
+            title=f"📑 Submission History",
+            description=f"**Learner email**: {email}",
+            color="#118ab2"
+        ).set_thumbnail(
+            "https://i.imgur.com/4Qf2VHJ.png"
+        ).set_footer(
+            text=f"Requested by {author.global_name}",
+            icon=author.avatar_url
+        )
+        for submission in response:
+            embed.add_field(
+                name=f"{submission['submitted_at'].replace('T', ' ')}",
+                value=f"**Exam**: {submission['exam']}\n **Score**: {submission['score']}",
+            )
+        await ctx.respond(embed=embed)
