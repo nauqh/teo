@@ -60,7 +60,7 @@ async def view_submission(ctx: lightbulb.Context):
         if not response['channel']:
             channel = f"https://discord.com/channels/{thread.guild_id}/{thread.id}"
             url = f"https://cspyexamclient.up.railway.app/channels/{exams[exam]}/{email}?channel={channel}"
-            response = requests.put(url)
+            requests.put(url)
 
         exam_type = 'sql' if exam.startswith('M1') else 'python'
 
