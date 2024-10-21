@@ -67,7 +67,14 @@ async def view_submission(ctx: lightbulb.Context):
         # Handle excessive submission
         await thread.send(f"```{exam_type}\n{submission_response[:submission_response.find('13:')]}\n```")
         await thread.send(f"```{exam_type}\n{submission_response[submission_response.find('13:'):]}\n```")
-        await thread.send(f"```{response['summary']}```")
+
+        if exam == 'M1.1 Basic SQL':
+            issue = response['summary'][response['summary'].find('Issue'):]
+            await thread.send(f"```{response['summary'][:response['summary'].find('Issue')]}```")
+            await thread.send(f"```{issue[:len(issue)//2]}```")
+            await thread.send(f"```{issue[len(issue)//2:]}```")
+        else:
+            await thread.send(f"```{response['summary']}```")
 
         with open(f'assets/solutions/{exam}.pdf', 'rb') as f:
             await thread.send(hikari.Bytes(f, 'solutions.pdf'))
