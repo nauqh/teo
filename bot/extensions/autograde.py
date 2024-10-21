@@ -99,7 +99,7 @@ async def update_score(ctx: lightbulb.Context):
 @plugin.command()
 @lightbulb.add_checks(lightbulb.guild_only, is_TA)
 @lightbulb.option('email', 'Learner email', required=True)
-@lightbulb.command('history', 'View submission history of a learner', auto_defer=True)
+@lightbulb.command('history', 'View learner submission history', auto_defer=True)
 @lightbulb.implements(lightbulb.SlashCommand)
 async def view_history(ctx: lightbulb.Context):
     email = ctx.options['email']
