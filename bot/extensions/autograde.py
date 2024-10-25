@@ -100,7 +100,7 @@ async def update_score(ctx: lightbulb.Context):
     if response.status_code != 200:
         await ctx.respond(response.json()['detail'])
     else:
-        await ctx.respond(f"{ctx.author.mention} updated score for learner `{email}`. New score is `{score}.`")
+        await ctx.respond(f"{ctx.author.mention} updated score for learner {email}.\nNew score is `{score}`.")
 
 
 @plugin.command()
