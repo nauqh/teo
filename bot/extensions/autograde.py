@@ -75,9 +75,15 @@ async def view_submission(ctx: lightbulb.Context):
         #     await thread.send(f"```{issue[len(issue)//2:]}```")
         # else:
         await thread.send(f"```{response['summary']}```")
-
-        with open(f'assets/solutions/{exam}.pdf', 'rb') as f:
-            await thread.send(hikari.Bytes(f, 'solutions.pdf'))
+        # with open(f'assets/solutions/{exam}.pdf', 'rb') as f:
+        #     await thread.send(hikari.Bytes(f, 'solutions.pdf'))
+        solutions = {
+            "M11": "https://drive.google.com/file/d/1tvZyXZX2ttlD8S7RJl6RJHtKtYxS5j6s/view?usp=drive_link",
+            "M12": "https://drive.google.com/file/d/1-0767BUsbseekFHzufuhDKEG253vclsg/view?usp=drive_link",
+            "M21": "https://drive.google.com/file/d/1aUYMDcDpnk0YymyHiSyzxULnPjvpLzOE/view?usp=drive_link",
+            "M31": "https://drive.google.com/file/d/17fS11_ClRjgGvL7x6MnP3019CkO8AFe6/view?usp=drive_link"
+        }
+        await thread.send(solutions[exams[exam]])
 
 
 @plugin.command()
