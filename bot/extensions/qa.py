@@ -133,55 +133,55 @@ Your primary tasks are to:
         return reply.response
 
 
-@plugin.listener(hikari.StartingEvent)
-async def on_starting(event: hikari.StartingEvent) -> None:
-    plugin.app.d.bot = ChatBot()
+# @plugin.listener(hikari.StartingEvent)
+# async def on_starting(event: hikari.StartingEvent) -> None:
+#     plugin.app.d.bot = ChatBot()
 
 
-@plugin.listener(hikari.GuildThreadCreateEvent)
-async def on_thread_create(event: hikari.GuildThreadCreateEvent) -> None:
-    """Handles the creation of a new thread in the question center and responds to the first message."""
-    thread: hikari.GuildThreadChannel = await event.fetch_channel()
+# @plugin.listener(hikari.GuildThreadCreateEvent)
+# async def on_thread_create(event: hikari.GuildThreadCreateEvent) -> None:
+#     """Handles the creation of a new thread in the question center and responds to the first message."""
+#     thread: hikari.GuildThreadChannel = await event.fetch_channel()
 
-    if thread.parent_id == 1301822138319114302:
-        messages = await thread.fetch_history()
-        if messages:
-            message: hikari.Message = messages[0]
-            attachments = [att.url for att in message.attachments]
-            response = plugin.app.d.bot.ask_with_context(
-                thread.id, attachments, message.content
-            )
-            await event.thread.send(response)
-    else:
-        print("Not question center")
+#     if thread.parent_id == 1301822138319114302:
+#         messages = await thread.fetch_history()
+#         if messages:
+#             message: hikari.Message = messages[0]
+#             attachments = [att.url for att in message.attachments]
+#             response = plugin.app.d.bot.ask_with_context(
+#                 thread.id, attachments, message.content
+#             )
+#             await event.thread.send(response)
+#     else:
+#         print("Not question center")
 
 
-@plugin.listener(hikari.GuildMessageCreateEvent)
-async def on_message_create(event: hikari.GuildMessageCreateEvent) -> None:
-    """Handles new messages in the question center thread to respond to follow-up questions."""
-    message = event.message
-    if message.author.is_bot:
-        return
+# @plugin.listener(hikari.GuildMessageCreateEvent)
+# async def on_message_create(event: hikari.GuildMessageCreateEvent) -> None:
+#     """Handles new messages in the question center thread to respond to follow-up questions."""
+#     message = event.message
+#     if message.author.is_bot:
+#         return
 
-    thread: hikari.GuildThreadChannel = await message.fetch_channel()
-    if thread.parent_id != 1301822138319114302:
-        return
-    if len(await thread.fetch_history()) <= 1:
-        return
-    if 1302689724431073310 in thread.applied_tag_ids:
-        print("Already responded")
-        return
+#     thread: hikari.GuildThreadChannel = await message.fetch_channel()
+#     if thread.parent_id != 1301822138319114302:
+#         return
+#     if len(await thread.fetch_history()) <= 1:
+#         return
+#     if 1302689724431073310 in thread.applied_tag_ids:
+#         print("Already responded")
+#         return
 
-    response_count = plugin.app.d.bot.response_count.get(thread.id, 0)
-    if response_count >= 4:
-        ta_role_id = 1194665960376901773
-        await thread.send(f"Bạn đợi các bạn TA <@&{ta_role_id}> một xíu nha!")
-        await thread.edit(
-            applied_tags=[1302689724431073310]
-        )
-    else:
-        attachments = [att.url for att in message.attachments]
-        response = plugin.app.d.bot.ask_with_context(
-            thread.id, attachments, message.content
-        )
-        await thread.send(response)
+#     response_count = plugin.app.d.bot.response_count.get(thread.id, 0)
+#     if response_count >= 4:
+#         ta_role_id = 1194665960376901773
+#         await thread.send(f"Bạn đợi các bạn TA <@&{ta_role_id}> một xíu nha!")
+#         await thread.edit(
+#             applied_tags=[1302689724431073310]
+#         )
+#     else:
+#         attachments = [att.url for att in message.attachments]
+#         response = plugin.app.d.bot.ask_with_context(
+#             thread.id, attachments, message.content
+#         )
+#         await thread.send(response)
